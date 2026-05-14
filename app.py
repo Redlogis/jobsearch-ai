@@ -2,6 +2,7 @@ import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dotenv import load_dotenv
 import streamlit as st
+import anthropic
 
 load_dotenv()
 
@@ -100,7 +101,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-tab_search, tab_info = st.tabs(["🔍 Wyszukiwarka ofert pracy", "ℹ️ O aplikacji"])
+tab_search, tab_analysis, tab_info = st.tabs(["🔍 Wyszukiwarka ofert pracy", "🤖 Analiza stanowiska", "ℹ️ O aplikacji"])
 
 with tab_search:
     col_kw, col_loc, col_btn = st.columns([3, 2, 1])
@@ -246,6 +247,87 @@ with tab_search:
             "</div>",
             unsafe_allow_html=True,
         )
+
+with tab_analysis:
+    st.markdown("### 🤖 Analiza stanowiska pracy")
+    st.markdown(
+        "<p style='color:#94A3B8;margin-top:-8px;margin-bottom:20px;'>"
+        "Wpisz nazwę stanowiska i otrzymaj szczegółową analizę rynku pracy w Polsce</p>",
+        unsafe_allow_html=True,
+    )
+
+    col_pos, col_abtn = st.columns([4, 1])
+    with col_pos:
+        position_name = st.text_input(
+            "Stanowisko",
+            placeholder="np. programista Python, analityk danych, project manager...",
+            label_visibility="collapsed",
+            key="position_input",
+        )
+    with col_abtn:
+        analyze_clicked = st.button("🤖 Analizuj", type="primary", use_container_width=True)
+
+    with st.expander("🔑 Klucz API Anthropic", expanded=False):
+        anthropic_key = st.text_input(
+            "Klucz API Anthropic",
+            placeholder="sk-ant-...",
+            type="password",
+            help="Bezpłatny klucz API: console.anthropic.com",
+            key="anthropic_key_input",
+        )
+
+    st.markdown("---")
+
+    if analyze_clicked:
+        if not position_name.strip():
+            st.warning("Wpisz nazwę stanowiska, aby rozpocząć analizę.")
+        else:
+            api_key = anthropic_key.strip() or os.getenv("ANTHROPIC_API_KEY", "")
+            if not api_key:
+                st.error("Brak klucza API Anthropic. Wpisz klucz w sekcji powyżej lub ustaw zmienną ANTHROPIC_API_KEY.")
+            else:
+                pos = position_name.strip()
+                prompt = f"""Przygotuj szczegółową analizę stanowiska "{pos}" na polskim rynku pracy.
+
+Odpowiedź podziel na 4 sekcje z nagłówkami:
+
+## 💰 Średnie zarobki w Polsce
+Podaj realistyczne widełki wynagrodzeń brutto miesięcznie dla różnych poziomów doświadczenia (junior, mid, senior) oraz dla różnych miast (Warszawa, Kraków, Wrocław, inne). Uwzględnij B2B i UoP.
+
+## 🛠️ Top 10 wymaganych umiejętności
+Wymień 10 najważniejszych umiejętności technicznych i miękkich wymaganych na tym stanowisku. Każdą umiejętność krótko opisz i oceń jej ważność.
+
+## ❓ 5 pytań rekrutacyjnych z odpowiedziami
+Podaj 5 typowych pytań zadawanych podczas rozmów kwalifikacyjnych na to stanowisko. Dla każdego pytania daj wzorcową odpowiedź.
+
+## ⭐ Jak wyróżnić się spośród kandydatów
+Podaj konkretne, praktyczne wskazówki jak wyróżnić swoją kandydaturę spośród innych aplikantów na to stanowisko."""
+
+                client = anthropic.Anthropic(api_key=api_key)
+                output_placeholder = st.empty()
+                full_text = ""
+
+                try:
+                    with st.spinner(f"Analizuję stanowisko: {pos}..."):
+                        with client.messages.stream(
+                            model="claude-opus-4-7",
+                            max_tokens=2048,
+                            thinking={"type": "adaptive"},
+                            messages=[{"role": "user", "content": prompt}],
+                        ) as stream:
+                            for text in stream.text_stream:
+                                full_text += text
+                                output_placeholder.markdown(
+                                    f"<div style='background:#1E293B;border:1px solid #334155;"
+                                    f"border-radius:12px;padding:24px;color:#F1F5F9;'>{full_text}</div>",
+                                    unsafe_allow_html=True,
+                                )
+                except anthropic.AuthenticationError:
+                    st.error("Nieprawidłowy klucz API Anthropic. Sprawdź klucz i spróbuj ponownie.")
+                except anthropic.RateLimitError:
+                    st.error("Przekroczono limit zapytań API. Poczekaj chwilę i spróbuj ponownie.")
+                except Exception as e:
+                    st.error(f"Błąd podczas analizy: {e}")
 
 with tab_info:
     st.markdown("### O aplikacji")
