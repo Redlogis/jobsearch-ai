@@ -7,8 +7,8 @@ ADZUNA_URL = "https://api.adzuna.com/v1/api/jobs/pl/search/1"
 
 
 def search_adzuna(keyword: str, location: str = "") -> tuple[list[JobOffer], str | None]:
-    app_id = os.getenv("ADZUNA_APP_ID", "166f4596")
-    app_key = os.getenv("ADZUNA_APP_KEY", "c66c15bfae9938c23e38f2a6cdec67e9")
+    app_id = os.getenv("ADZUNA_APP_ID", "a5e4008d")
+    app_key = os.getenv("ADZUNA_APP_KEY", "96608db3718317831e67b042d4c86522")
 
     params: dict = {
         "app_id": app_id,
