@@ -13,6 +13,7 @@ from services.nofluffjobs import search_nofluffjobs
 from services.bulldogjob import search_bulldogjob
 from services.theprotocol import search_theprotocol
 from services.gowork import search_gowork
+from services.adzuna import search_adzuna
 
 st.set_page_config(
     page_title="PracaRadar",
@@ -99,7 +100,7 @@ hr { border-color: #334155; }
 st.markdown("## 📡 PracaRadar")
 st.markdown(
     "<p style='color:#94A3B8;margin-top:-8px;margin-bottom:20px;'>"
-    "Twój radar na rynku pracy &nbsp;·&nbsp; 7 źródeł jednocześnie</p>",
+    "Twój radar na rynku pracy &nbsp;·&nbsp; 8 źródeł jednocześnie</p>",
     unsafe_allow_html=True,
 )
 
@@ -150,12 +151,13 @@ with tab_search:
                 "Bulldogjob":     lambda: search_bulldogjob(kw),
                 "TheProtocol.it": lambda: search_theprotocol(kw, loc),
                 "GoWork":         lambda: search_gowork(kw, loc),
+                "Adzuna":         lambda: search_adzuna(kw, loc),
             }
 
             results: dict[str, tuple] = {}
             progress = st.progress(0, text="Szukam ofert pracy...")
 
-            with ThreadPoolExecutor(max_workers=7) as executor:
+            with ThreadPoolExecutor(max_workers=8) as executor:
                 futures = {
                     executor.submit(search_fns[src]): src
                     for src in selected if src in search_fns
@@ -248,7 +250,7 @@ with tab_search:
 with tab_info:
     st.markdown("### O aplikacji")
     st.markdown("""
-Aplikacja agreguje oferty pracy z 7 źródeł jednocześnie:
+Aplikacja agreguje oferty pracy z 8 źródeł jednocześnie:
 
 | Źródło | Typ | Wymagania |
 |---|---|---|
@@ -259,6 +261,7 @@ Aplikacja agreguje oferty pracy z 7 źródeł jednocześnie:
 | **Bulldogjob** | RSS | Brak |
 | **TheProtocol.it** | RSS | Brak |
 | **GoWork** | RSS | Brak |
+| **Adzuna** | REST API | App ID + App Key |
 
 ---
 
