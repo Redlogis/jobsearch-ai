@@ -2,21 +2,36 @@ import requests
 import xml.etree.ElementTree as ET
 from .base import JobOffer, parse_date_rss
 
-HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; JobSearchBot/1.0)"}
-RSS_URL = "https://bulldogjob.pl/companies/jobs/feed"
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "Accept": "application/rss+xml, application/xml, text/xml, */*",
+}
+
+# Bulldogjob zmienił URL feeda — próbujemy kolejno
+_RSS_CANDIDATES = [
+    "https://bulldogjob.pl/feed/jobs",
+    "https://bulldogjob.pl/jobs.rss",
+    "https://bulldogjob.pl/news/feeds/job_feed.rss",
+    "https://bulldogjob.pl/companies/jobs.rss",
+]
 
 
 def search_bulldogjob(keyword: str) -> tuple[list[JobOffer], str | None]:
-    try:
-        resp = requests.get(RSS_URL, headers=HEADERS, timeout=12)
-        resp.raise_for_status()
-        root = ET.fromstring(resp.content)
-    except requests.exceptions.Timeout:
-        return [], "Przekroczono czas oczekiwania na odpowiedź Bulldogjob"
-    except requests.exceptions.RequestException as e:
-        return [], f"Błąd połączenia z Bulldogjob: {e}"
-    except ET.ParseError:
-        return [], "Nieprawidłowa odpowiedź XML z Bulldogjob"
+    root = None
+    last_err = ""
+    for url in _RSS_CANDIDATES:
+        try:
+            resp = requests.get(url, headers=HEADERS, timeout=12)
+            if resp.status_code == 200:
+                root = ET.fromstring(resp.content)
+                break
+        except requests.exceptions.RequestException as e:
+            last_err = str(e)
+        except ET.ParseError:
+            last_err = "Nieprawidłowy XML"
+
+    if root is None:
+        return [], f"Nie można pobrać feedu Bulldogjob: {last_err}"
 
     kw = keyword.lower()
     offers = []
@@ -26,12 +41,7 @@ def search_bulldogjob(keyword: str) -> tuple[list[JobOffer], str | None]:
         if kw not in title.lower() and kw not in desc:
             continue
 
-        # Bulldogjob RSS: title format "Rola @ Firma"
-        if " @ " in title:
-            role, company = title.split(" @ ", 1)
-        else:
-            role, company = title, ""
-
+        role, company = (title.split(" @ ", 1) + [""])[:2] if " @ " in title else (title, "")
         category = _text(item, "category")
 
         offers.append(JobOffer(

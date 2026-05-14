@@ -1,38 +1,61 @@
 import requests
 import xml.etree.ElementTree as ET
-from typing import Optional
+from urllib.parse import quote
 from .base import JobOffer, parse_date_rss
 
-HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; JobSearchBot/1.0)"}
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "pl-PL,pl;q=0.9",
+    "Referer": "https://www.pracuj.pl/",
+}
+
+_RSS_CANDIDATES = [
+    "https://www.pracuj.pl/praca/{kw};kw{loc}.rss",
+    "https://www.pracuj.pl/praca.rss?q={kw_raw}",
+]
 
 
 def search_pracuj(keyword: str, location: str = "") -> tuple[list[JobOffer], str | None]:
-    kw_slug = keyword.replace(" ", "+")
-    loc_part = f";wp,{location.replace(' ', '+')}" if location else ""
-    url = f"https://www.pracuj.pl/praca/{kw_slug};kw{loc_part}.rss"
+    kw = quote(keyword.replace(" ", "+"))
+    loc_part = f";wp,{quote(location.replace(' ', '+'))}" if location else ""
 
+    session = requests.Session()
+    session.headers.update(HEADERS)
     try:
-        resp = requests.get(url, headers=HEADERS, timeout=12)
-        resp.raise_for_status()
-        root = ET.fromstring(resp.content)
-    except requests.exceptions.Timeout:
-        return [], "Przekroczono czas oczekiwania na odpowiedź Pracuj.pl"
-    except requests.exceptions.RequestException as e:
-        return [], f"Błąd połączenia z Pracuj.pl: {e}"
-    except ET.ParseError:
-        return [], "Nieprawidłowa odpowiedź XML z Pracuj.pl"
+        session.get("https://www.pracuj.pl/", timeout=8)
+    except Exception:
+        pass
+
+    root = None
+    last_err = ""
+    for tpl in _RSS_CANDIDATES:
+        url = tpl.format(kw=kw, loc=loc_part, kw_raw=quote(keyword))
+        try:
+            resp = session.get(url, timeout=12)
+            if resp.status_code == 200 and b"<rss" in resp.content[:500]:
+                root = ET.fromstring(resp.content)
+                break
+            last_err = f"HTTP {resp.status_code}"
+        except requests.exceptions.RequestException as e:
+            last_err = str(e)
+        except ET.ParseError:
+            last_err = "Nieprawidłowy XML"
+
+    if root is None:
+        return [], f"Nie można pobrać feedu Pracuj.pl: {last_err}"
 
     offers = []
     for item in root.findall(".//item")[:30]:
         title_raw = _text(item, "title")
-        title, company, loc_parsed = _split_title(title_raw)
-        if not loc_parsed and location:
-            loc_parsed = location
+        title, company, loc = _split_title(title_raw)
+        if not loc and location:
+            loc = location
 
         offers.append(JobOffer(
-            title=title,
-            company=company,
-            location=loc_parsed or "Polska",
+            title=title or "Brak tytułu",
+            company=company or "Nieznana firma",
+            location=loc or "Polska",
             salary=None,
             date_posted=parse_date_rss(_text(item, "pubDate")),
             apply_url=_text(item, "link") or "#",
@@ -47,7 +70,6 @@ def _text(el: ET.Element, tag: str) -> str:
 
 
 def _split_title(raw: str) -> tuple[str, str, str]:
-    """Pracuj.pl tytuły: 'Stanowisko – Firma – Miasto' lub 'Stanowisko - Firma - Miasto'."""
     for sep in (" – ", " - "):
         parts = [p.strip() for p in raw.split(sep) if p.strip()]
         if len(parts) >= 3:

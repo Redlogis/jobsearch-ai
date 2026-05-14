@@ -1,1 +1,3 @@
-# jobsearch-ai
+# PracaRadar
+
+> Twój radar na rynku pracy

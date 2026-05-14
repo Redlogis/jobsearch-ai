@@ -15,7 +15,7 @@ from services.theprotocol import search_theprotocol
 from services.gowork import search_gowork
 
 st.set_page_config(
-    page_title="JobSearch AI",
+    page_title="PracaRadar",
     page_icon="💼",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -96,10 +96,10 @@ hr { border-color: #334155; }
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("## 💼 JobSearch AI")
+st.markdown("## 📡 PracaRadar")
 st.markdown(
     "<p style='color:#94A3B8;margin-top:-8px;margin-bottom:20px;'>"
-    "Wyszukaj oferty pracy z 7 źródeł jednocześnie</p>",
+    "Twój radar na rynku pracy &nbsp;·&nbsp; 7 źródeł jednocześnie</p>",
     unsafe_allow_html=True,
 )
 
