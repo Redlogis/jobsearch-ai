@@ -3,24 +3,51 @@ import xml.etree.ElementTree as ET
 from urllib.parse import quote
 from .base import JobOffer, parse_date_rss
 
-HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; JobSearchBot/1.0)"}
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "pl-PL,pl;q=0.9,en;q=0.8",
+    "Referer": "https://www.gowork.pl/",
+}
+
+_RSS_CANDIDATES = [
+    "https://www.gowork.pl/praca/{loc}/{kw}.rss",
+    "https://www.gowork.pl/praca/{kw}.rss",
+    "https://www.gowork.pl/oferty-pracy/{kw}.rss",
+    "https://www.gowork.pl/szukaj/{kw}.rss",
+]
 
 
 def search_gowork(keyword: str, location: str = "") -> tuple[list[JobOffer], str | None]:
     kw_slug = quote(keyword.replace(" ", "-").lower())
-    loc_slug = f"/{quote(location.replace(' ', '-').lower())}" if location else ""
-    url = f"https://www.gowork.pl/praca{loc_slug}/{kw_slug}.rss"
+    loc_slug = quote(location.replace(" ", "-").lower()) if location else ""
 
+    session = requests.Session()
+    session.headers.update(HEADERS)
     try:
-        resp = requests.get(url, headers=HEADERS, timeout=12)
-        resp.raise_for_status()
-        root = ET.fromstring(resp.content)
-    except requests.exceptions.Timeout:
-        return [], "Przekroczono czas oczekiwania na odpowiedź GoWork"
-    except requests.exceptions.RequestException as e:
-        return [], f"Błąd połączenia z GoWork: {e}"
-    except ET.ParseError:
-        return [], "Nieprawidłowa odpowiedź XML z GoWork"
+        session.get("https://www.gowork.pl/", timeout=8)
+    except Exception:
+        pass
+
+    root = None
+    last_err = ""
+    for tpl in _RSS_CANDIDATES:
+        if "{loc}" in tpl and not loc_slug:
+            continue
+        url = tpl.format(kw=kw_slug, loc=loc_slug)
+        try:
+            resp = session.get(url, timeout=12)
+            if resp.status_code == 200:
+                root = ET.fromstring(resp.content)
+                break
+            last_err = f"HTTP {resp.status_code}"
+        except requests.exceptions.RequestException as e:
+            last_err = str(e)
+        except ET.ParseError:
+            last_err = "Nieprawidłowy XML"
+
+    if root is None:
+        return [], f"Nie można pobrać feedu GoWork: {last_err}"
 
     offers = []
     for item in root.findall(".//item")[:30]:
