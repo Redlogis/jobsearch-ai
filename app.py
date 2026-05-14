@@ -267,24 +267,15 @@ with tab_analysis:
     with col_abtn:
         analyze_clicked = st.button("🤖 Analizuj", type="primary", use_container_width=True)
 
-    with st.expander("🔑 Klucz API Anthropic", expanded=False):
-        anthropic_key = st.text_input(
-            "Klucz API Anthropic",
-            placeholder="sk-ant-...",
-            type="password",
-            help="Bezpłatny klucz API: console.anthropic.com",
-            key="anthropic_key_input",
-        )
-
     st.markdown("---")
 
     if analyze_clicked:
         if not position_name.strip():
             st.warning("Wpisz nazwę stanowiska, aby rozpocząć analizę.")
         else:
-            api_key = anthropic_key.strip() or os.getenv("ANTHROPIC_API_KEY", "")
+            api_key = st.secrets.get("ANTHROPIC_API_KEY", os.getenv("ANTHROPIC_API_KEY", ""))
             if not api_key:
-                st.error("Brak klucza API Anthropic. Wpisz klucz w sekcji powyżej lub ustaw zmienną ANTHROPIC_API_KEY.")
+                st.error("Analiza AI jest chwilowo niedostępna. Skontaktuj się z administratorem aplikacji.")
             else:
                 pos = position_name.strip()
                 prompt = f"""Przygotuj szczegółową analizę stanowiska "{pos}" na polskim rynku pracy.
@@ -323,7 +314,7 @@ Podaj konkretne, praktyczne wskazówki jak wyróżnić swoją kandydaturę spoś
                                     unsafe_allow_html=True,
                                 )
                 except anthropic.AuthenticationError:
-                    st.error("Nieprawidłowy klucz API Anthropic. Sprawdź klucz i spróbuj ponownie.")
+                    st.error("Analiza AI jest chwilowo niedostępna. Skontaktuj się z administratorem aplikacji.")
                 except anthropic.RateLimitError:
                     st.error("Przekroczono limit zapytań API. Poczekaj chwilę i spróbuj ponownie.")
                 except Exception as e:
