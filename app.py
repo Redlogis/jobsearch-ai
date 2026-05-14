@@ -167,7 +167,7 @@ with tab_search:
                     "<div style='text-align:center;padding:60px 0;color:#64748B;'>"
                     "<div style='font-size:3rem;'>🔎</div>"
                     "<div style='font-size:1.1rem;margin-top:12px;'>Nie znaleziono ofert dla frazy "
-                    f"<strong style='color:#94A3B8;'>„{keyword}"</strong></div>"
+                    f"<strong style='color:#94A3B8;'>&#8222;{keyword}&#8221;</strong></div>"
                     "<div style='margin-top:8px;font-size:0.9rem;'>Spróbuj innego słowa kluczowego</div>"
                     "</div>",
                     unsafe_allow_html=True,
