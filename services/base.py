@@ -14,14 +14,10 @@ class JobOffer:
 
 
 SOURCE_STYLES: dict[str, dict] = {
-    "JustJoin.IT":   {"bg": "#3B1F5E", "text": "#C084FC"},
-    "Jooble":        {"bg": "#1E3A5F", "text": "#60A5FA"},
-    "Pracuj.pl":     {"bg": "#14532D", "text": "#4ADE80"},
-    "NoFluffJobs":   {"bg": "#7F1D1D", "text": "#F87171"},
-    "Bulldogjob":    {"bg": "#451A03", "text": "#FB923C"},
-    "TheProtocol.it":{"bg": "#134E4A", "text": "#2DD4BF"},
-    "GoWork":        {"bg": "#312E81", "text": "#818CF8"},
-    "Adzuna":        {"bg": "#1C3557", "text": "#38BDF8"},
+    "JustJoin.IT": {"bg": "#3B1F5E", "text": "#C084FC"},
+    "Jooble":      {"bg": "#1E3A5F", "text": "#60A5FA"},
+    "NoFluffJobs": {"bg": "#7F1D1D", "text": "#F87171"},
+    "Adzuna":      {"bg": "#1C3557", "text": "#38BDF8"},
 }
 
 

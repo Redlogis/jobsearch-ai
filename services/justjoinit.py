@@ -42,9 +42,15 @@ def search_justjoinit(keyword: str) -> tuple[list[JobOffer], str | None]:
     kw = keyword.lower()
     matched = [
         o for o in raw_offers
-        if kw in str(o.get("title", "")).lower()
-        or kw in str(o.get("companyName", o.get("company_name", ""))).lower()
-        or any(kw in str(s.get("name", "")).lower() for s in o.get("requiredSkills", o.get("skills", [])))
+        if isinstance(o, dict)
+        and (
+            kw in str(o.get("title", "")).lower()
+            or kw in str(o.get("companyName", o.get("company_name", ""))).lower()
+            or any(
+                kw in (s.get("name", "") if isinstance(s, dict) else str(s)).lower()
+                for s in o.get("requiredSkills", o.get("skills", []))
+            )
+        )
     ]
 
     offers = []

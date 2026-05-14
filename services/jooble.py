@@ -6,10 +6,11 @@ from .base import JobOffer, parse_date_iso
 JOOBLE_API_URL = "https://pl.jooble.org/api/{key}"
 
 
-def search_jooble(keyword: str, location: str = "") -> tuple[list[JobOffer], str | None]:
-    api_key = os.getenv("JOOBLE_API_KEY", "")
+def search_jooble(keyword: str, location: str = "", api_key: str = "") -> tuple[list[JobOffer], str | None]:
+    if not api_key:
+        api_key = os.getenv("JOOBLE_API_KEY", "")
     if not api_key or api_key == "twoj_klucz_api_tutaj":
-        return [], "Brak klucza API Jooble. Dodaj JOOBLE_API_KEY do pliku .env"
+        return [], "Brak klucza API Jooble"
 
     url = JOOBLE_API_URL.format(key=api_key)
     try:

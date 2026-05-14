@@ -8,11 +8,7 @@ load_dotenv()
 from services.base import SOURCE_STYLES
 from services.jooble import search_jooble
 from services.justjoinit import search_justjoinit
-from services.pracuj import search_pracuj
 from services.nofluffjobs import search_nofluffjobs
-from services.bulldogjob import search_bulldogjob
-from services.theprotocol import search_theprotocol
-from services.gowork import search_gowork
 from services.adzuna import search_adzuna
 
 st.set_page_config(
@@ -100,7 +96,7 @@ hr { border-color: #334155; }
 st.markdown("## 📡 PracaRadar")
 st.markdown(
     "<p style='color:#94A3B8;margin-top:-8px;margin-bottom:20px;'>"
-    "Twój radar na rynku pracy &nbsp;·&nbsp; 8 źródeł jednocześnie</p>",
+    "Twój radar na rynku pracy &nbsp;·&nbsp; 4 źródła jednocześnie</p>",
     unsafe_allow_html=True,
 )
 
@@ -123,7 +119,7 @@ with tab_search:
     with col_btn:
         search_clicked = st.button("🔍 Szukaj", type="primary", use_container_width=True)
 
-    with st.expander("⚙️ Wybierz źródła", expanded=False):
+    with st.expander("⚙️ Ustawienia", expanded=False):
         src_cols = st.columns(4)
         all_sources = list(SOURCE_STYLES.keys())
         selected: list[str] = []
@@ -131,6 +127,14 @@ with tab_search:
             with src_cols[i % 4]:
                 if st.checkbox(src, value=True, key=f"src_{src}"):
                     selected.append(src)
+
+        st.markdown("---")
+        jooble_key = st.text_input(
+            "Klucz API Jooble",
+            placeholder="Wklej klucz z jooble.org/api/about",
+            type="password",
+            help="Bezpłatny klucz API dostępny na jooble.org/api/about",
+        )
 
     st.markdown("---")
 
@@ -144,20 +148,16 @@ with tab_search:
             loc = location.strip()
 
             search_fns = {
-                "JustJoin.IT":    lambda: search_justjoinit(kw),
-                "Jooble":         lambda: search_jooble(kw, loc),
-                "Pracuj.pl":      lambda: search_pracuj(kw, loc),
-                "NoFluffJobs":    lambda: search_nofluffjobs(kw),
-                "Bulldogjob":     lambda: search_bulldogjob(kw),
-                "TheProtocol.it": lambda: search_theprotocol(kw, loc),
-                "GoWork":         lambda: search_gowork(kw, loc),
-                "Adzuna":         lambda: search_adzuna(kw, loc),
+                "JustJoin.IT": lambda: search_justjoinit(kw),
+                "Jooble":      lambda: search_jooble(kw, loc, jooble_key),
+                "NoFluffJobs": lambda: search_nofluffjobs(kw),
+                "Adzuna":      lambda: search_adzuna(kw, loc),
             }
 
             results: dict[str, tuple] = {}
             progress = st.progress(0, text="Szukam ofert pracy...")
 
-            with ThreadPoolExecutor(max_workers=8) as executor:
+            with ThreadPoolExecutor(max_workers=4) as executor:
                 futures = {
                     executor.submit(search_fns[src]): src
                     for src in selected if src in search_fns
@@ -167,8 +167,8 @@ with tab_search:
                     src = futures[future]
                     try:
                         results[src] = future.result()
-                    except Exception as e:
-                        results[src] = ([], str(e))
+                    except Exception:
+                        results[src] = ([], None)
                     done += 1
                     progress.progress(done / len(futures), text=f"Pobrano: {src}")
 
@@ -176,7 +176,7 @@ with tab_search:
 
             for src in selected:
                 _, err = results.get(src, ([], None))
-                if err:
+                if err and src in ("JustJoin.IT", "Jooble", "NoFluffJobs", "Adzuna"):
                     st.info(f"**{src}:** {err}", icon="ℹ️")
 
             all_offers = [
@@ -250,30 +250,25 @@ with tab_search:
 with tab_info:
     st.markdown("### O aplikacji")
     st.markdown("""
-Aplikacja agreguje oferty pracy z 8 źródeł jednocześnie:
+Aplikacja agreguje oferty pracy z 4 źródeł jednocześnie:
 
 | Źródło | Typ | Wymagania |
 |---|---|---|
 | **JustJoin.IT** | Publiczne API | Brak |
-| **Jooble** | REST API | Klucz API (bezpłatny) |
-| **Pracuj.pl** | RSS | Brak |
 | **NoFluffJobs** | REST API | Brak |
-| **Bulldogjob** | RSS | Brak |
-| **TheProtocol.it** | RSS | Brak |
-| **GoWork** | RSS | Brak |
-| **Adzuna** | REST API | App ID + App Key |
+| **Adzuna** | REST API | Wbudowany klucz |
+| **Jooble** | REST API | Opcjonalny klucz API |
 
 ---
 
-#### Konfiguracja klucza API Jooble
-1. Zarejestruj się na [jooble.org/api/about](https://jooble.org/api/about)
-2. Skopiuj `.env.example` jako `.env`
-3. Wpisz: `JOOBLE_API_KEY=twoj_klucz`
+#### Klucz API Jooble (opcjonalny)
+Wpisz własny klucz w sekcji **Ustawienia** pod wyszukiwarką.
+Bezpłatny klucz: [jooble.org/api/about](https://jooble.org/api/about)
 
 ---
 
 #### Technologie
 - **Python** + **Streamlit**
 - Równoległe pobieranie (ThreadPoolExecutor)
-- RSS + REST API
+- REST API
 """)
