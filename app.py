@@ -111,6 +111,12 @@ hr { border-color: #334155; }
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------------------------
+# Global keyword state
+# ---------------------------------------------------------------------------
+
+st.session_state.setdefault("keyword", "")
+
+# ---------------------------------------------------------------------------
 # Sidebar navigation
 # ---------------------------------------------------------------------------
 
@@ -143,6 +149,19 @@ with st.sidebar:
     )
     page = selected_label.split("  ", 1)[1].strip()
 
+    st.markdown("---")
+    kw_sidebar = st.session_state.get("keyword", "").strip()
+    if kw_sidebar:
+        st.markdown(
+            f"<div style='background:#14253D;border:1px solid #1E3A5F;border-radius:8px;"
+            f"padding:8px 12px;font-size:0.8rem;color:#93C5FD;'>"
+            f"📍 <strong style='color:#F1F5F9;'>{kw_sidebar}</strong></div>",
+            unsafe_allow_html=True,
+        )
+        if st.button("✕ Wyczyść stanowisko", use_container_width=True):
+            st.session_state["keyword"] = ""
+            st.rerun()
+
     st.markdown(
         "<div style='position:absolute;bottom:20px;left:0;right:0;padding:0 16px;"
         "font-size:0.72rem;color:#1E293B;text-align:center;'>"
@@ -150,6 +169,49 @@ with st.sidebar:
         "</div>",
         unsafe_allow_html=True,
     )
+
+# ---------------------------------------------------------------------------
+# Helper: keyword bar shown at top of every content page
+# ---------------------------------------------------------------------------
+
+def _keyword_bar(suffix: str) -> str:
+    """
+    Displays a keyword input bar. If keyword is already set in session_state,
+    shows it as a banner with a change button. Returns the active keyword.
+    """
+    kw = st.session_state.get("keyword", "").strip()
+
+    if kw:
+        col1, col2 = st.columns([7, 1])
+        with col1:
+            st.markdown(
+                f"<div style='background:#14253D;border:1px solid #1E4D7B;border-radius:8px;"
+                f"padding:10px 16px;color:#93C5FD;font-size:0.92rem;'>"
+                f"📍 Stanowisko: <strong style='color:#F1F5F9;font-size:1rem;'>{kw}</strong></div>",
+                unsafe_allow_html=True,
+            )
+        with col2:
+            if st.button("✏️ Zmień", key=f"chg_{suffix}", use_container_width=True):
+                st.session_state["keyword"] = ""
+                st.rerun()
+    else:
+        col1, col2 = st.columns([5, 1])
+        with col1:
+            inp = st.text_input(
+                "Stanowisko",
+                placeholder="np. programista Python, logistyk, analityk danych...",
+                label_visibility="collapsed",
+                key=f"kw_inp_{suffix}",
+            )
+        with col2:
+            go = st.button("🔎 Szukaj", key=f"kw_btn_{suffix}",
+                           type="primary", use_container_width=True)
+        if go and inp.strip():
+            st.session_state["keyword"] = inp.strip()
+            st.rerun()
+
+    st.markdown("---")
+    return st.session_state.get("keyword", "").strip()
 
 # ---------------------------------------------------------------------------
 # Helper: placeholder for unimplemented sections
@@ -195,6 +257,7 @@ if page == "Wyszukiwarka":
             "Słowo kluczowe",
             placeholder="np. logistyk, programista Python, analityk...",
             label_visibility="collapsed",
+            key="keyword",
         )
     with col_loc:
         location = st.text_input(
@@ -454,50 +517,63 @@ elif page == "Analiza stanowiska":
 # ===========================================================================
 
 elif page == "Umiejętności":
-    _coming_soon(
-        "🎯",
-        "Wymagania i umiejętności",
-        "Hard skills, soft skills i umiejętności które dają największy skok wynagrodzenia.\nWkrótce dostępne.",
-    )
+    st.markdown("## 🎯 Wymagania i umiejętności")
+    kw = _keyword_bar("umiejetnosci")
+    if kw:
+        _coming_soon(
+            "🎯",
+            f"Umiejętności: {kw}",
+            "Hard skills, soft skills i umiejętności które dają największy skok wynagrodzenia.\nWkrótce dostępne.",
+        )
 
 # ===========================================================================
 # PAGE: Pytania rekrutacyjne
 # ===========================================================================
 
 elif page == "Pytania rekrutacyjne":
-    _coming_soon(
-        "❓",
-        "Pytania rekrutacyjne",
-        "Top 20 pytań dla Twojego stanowiska z przykładowymi odpowiedziami metodą STAR.\nWkrótce dostępne.",
-    )
+    st.markdown("## ❓ Pytania rekrutacyjne")
+    kw = _keyword_bar("pytania")
+    if kw:
+        _coming_soon(
+            "❓",
+            f"Pytania dla: {kw}",
+            "Top 20 pytań z przykładowymi odpowiedziami metodą STAR.\nWkrótce dostępne.",
+        )
 
 # ===========================================================================
 # PAGE: Wzmacniacz CV
 # ===========================================================================
 
 elif page == "Wzmacniacz CV":
-    _coming_soon(
-        "📝",
-        "Wzmacniacz CV",
-        "Wklej swój opis doświadczenia — zamieniamy ogólniki w konkretne osiągnięcia z liczbami.\nWkrótce dostępne.",
-    )
+    st.markdown("## 📝 Wzmacniacz CV")
+    kw = _keyword_bar("wzmacniacz")
+    if kw:
+        _coming_soon(
+            "📝",
+            f"Wzmacniacz CV dla: {kw}",
+            "Wklej swój opis doświadczenia — zamieniamy ogólniki w konkretne osiągnięcia z liczbami.\nWkrótce dostępne.",
+        )
 
 # ===========================================================================
 # PAGE: Kalkulator wynagrodzeń
 # ===========================================================================
 
 elif page == "Kalkulator wynagrodzeń":
-    _coming_soon(
-        "💰",
-        "Kalkulator wynagrodzeń",
-        "Na podstawie stanowiska, miasta, lat doświadczenia i umiejętności — przedział który możesz negocjować.\nWkrótce dostępne.",
-    )
+    st.markdown("## 💰 Kalkulator wynagrodzeń")
+    kw = _keyword_bar("kalkulator")
+    if kw:
+        _coming_soon(
+            "💰",
+            f"Kalkulator dla: {kw}",
+            "Na podstawie stanowiska, miasta, lat doświadczenia i umiejętności — przedział który możesz negocjować.\nWkrótce dostępne.",
+        )
 
 # ===========================================================================
 # PAGE: Tracker aplikacji
 # ===========================================================================
 
 elif page == "Tracker aplikacji":
+    st.markdown("## 📋 Tracker aplikacji")
     _coming_soon(
         "📋",
         "Tracker aplikacji",
@@ -509,17 +585,21 @@ elif page == "Tracker aplikacji":
 # ===========================================================================
 
 elif page == "Zasoby":
-    _coming_soon(
-        "📚",
-        "Polecane zasoby",
-        "Dla Twojego stanowiska: kursy, narzędzia, kanały YouTube po polsku i darmowe aplikacje.\nWkrótce dostępne.",
-    )
+    st.markdown("## 📚 Polecane zasoby")
+    kw = _keyword_bar("zasoby")
+    if kw:
+        _coming_soon(
+            "📚",
+            f"Zasoby dla: {kw}",
+            "Kursy, narzędzia, kanały YouTube po polsku i darmowe aplikacje.\nWkrótce dostępne.",
+        )
 
 # ===========================================================================
 # PAGE: Trendy
 # ===========================================================================
 
 elif page == "Trendy":
+    st.markdown("## 📈 Trendy rynkowe")
     _coming_soon(
         "📈",
         "Trendy rynkowe",
