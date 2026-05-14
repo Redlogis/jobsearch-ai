@@ -1,0 +1,615 @@
+{
+  "stanowiska": {
+    "programista python": {
+      "nazwa": "Programista Python",
+      "zarobki": {
+        "junior": { "uop": "5 000 – 8 000 PLN", "b2b": "6 000 – 10 000 PLN" },
+        "mid":    { "uop": "10 000 – 16 000 PLN", "b2b": "13 000 – 20 000 PLN" },
+        "senior": { "uop": "18 000 – 28 000 PLN", "b2b": "22 000 – 35 000 PLN" }
+      },
+      "miasta": { "Warszawa": "+15%", "Kraków": "+8%", "Wrocław": "+7%", "inne": "baza" },
+      "umiejetnosci": [
+        { "nazwa": "Python (OOP, async)", "waga": "Kluczowa" },
+        { "nazwa": "SQL i bazy danych (PostgreSQL, MySQL)", "waga": "Kluczowa" },
+        { "nazwa": "Git i praca zespołowa (GitHub/GitLab)", "waga": "Kluczowa" },
+        { "nazwa": "REST API (FastAPI, Django REST, Flask)", "waga": "Wysoka" },
+        { "nazwa": "Docker i konteneryzacja", "waga": "Wysoka" },
+        { "nazwa": "Testy jednostkowe (pytest)", "waga": "Wysoka" },
+        { "nazwa": "Linux i podstawy bash", "waga": "Średnia" },
+        { "nazwa": "CI/CD (GitHub Actions, Jenkins)", "waga": "Średnia" },
+        { "nazwa": "Komunikacja i dokumentacja kodu", "waga": "Ważna" },
+        { "nazwa": "Znajomość wzorców projektowych", "waga": "Przydatna" }
+      ],
+      "pytania": [
+        {
+          "pytanie": "Czym różni się lista od krotki w Pythonie?",
+          "odpowiedz": "Lista jest mutowalna (można ją zmieniać), krotka jest niemutowalna. Krotki są szybsze i zajmują mniej pamięci — używamy ich do danych, które nie powinny się zmieniać, np. współrzędnych lub kluczy słownika."
+        },
+        {
+          "pytanie": "Co to jest dekorator i jak go napisać?",
+          "odpowiedz": "Dekorator to funkcja opakowująca inną funkcję, dodająca jej nowe zachowanie bez zmiany kodu. Piszemy go używając składni @decorator nad definicją funkcji. Wewnątrz dekoratora tworzymy funkcję wrapper, która wywołuje oryginalną funkcję."
+        },
+        {
+          "pytanie": "Wyjaśnij różnicę między synchronicznym a asynchronicznym kodem w Pythonie.",
+          "odpowiedz": "Kod synchroniczny wykonuje się sekwencyjnie — każda operacja czeka na poprzednią. Kod asynchroniczny (async/await) pozwala na współbieżne wykonanie operacji I/O-bound: podczas oczekiwania na odpowiedź bazy danych program może obsługiwać inne żądania."
+        },
+        {
+          "pytanie": "Jak optymalizujesz wolne zapytania SQL?",
+          "odpowiedz": "Zaczynam od EXPLAIN ANALYZE, sprawdzam brakujące indeksy, eliminuję N+1, unikam SELECT *, rozważam partycjonowanie tabel dla dużych danych. Ważne jest też cachowanie wyników częstych zapytań (Redis)."
+        },
+        {
+          "pytanie": "Opisz projekt, z którego jesteś najbardziej dumny.",
+          "odpowiedz": "Opisuję konkretny projekt, podaję problem który rozwiązywał, technologie których użyłem, napotkane trudności i jak je pokonałem, a na koniec mierzalne rezultaty (np. skrócenie czasu o X%, obsługa Y użytkowników dziennie)."
+        }
+      ],
+      "wyroznienie": [
+        "Portfolio na GitHubie z co najmniej 3 ukończonymi projektami z README",
+        "Wkład w projekty open source (nawet małe PR mają znaczenie)",
+        "Certyfikat AWS, GCP lub Azure — sygnał zainteresowania architekturą",
+        "Blog techniczny lub aktywność na Stack Overflow",
+        "Znajomość dziedziny branżowej pracodawcy (fintech, e-commerce, health-tech)"
+      ]
+    },
+
+    "programista javascript": {
+      "nazwa": "Programista JavaScript / Frontend",
+      "zarobki": {
+        "junior": { "uop": "5 000 – 8 000 PLN", "b2b": "6 000 – 10 000 PLN" },
+        "mid":    { "uop": "10 000 – 16 000 PLN", "b2b": "12 000 – 19 000 PLN" },
+        "senior": { "uop": "17 000 – 26 000 PLN", "b2b": "20 000 – 32 000 PLN" }
+      },
+      "miasta": { "Warszawa": "+15%", "Kraków": "+8%", "Wrocław": "+7%", "inne": "baza" },
+      "umiejetnosci": [
+        { "nazwa": "JavaScript ES6+ (async/await, closures)", "waga": "Kluczowa" },
+        { "nazwa": "React lub Vue.js / Angular", "waga": "Kluczowa" },
+        { "nazwa": "HTML5 i CSS3 (Flexbox, Grid)", "waga": "Kluczowa" },
+        { "nazwa": "TypeScript", "waga": "Wysoka" },
+        { "nazwa": "REST API i fetch/axios", "waga": "Wysoka" },
+        { "nazwa": "Git i workflow (branching, PR)", "waga": "Wysoka" },
+        { "nazwa": "Webpack / Vite / bundlery", "waga": "Średnia" },
+        { "nazwa": "Testy (Jest, React Testing Library)", "waga": "Średnia" },
+        { "nazwa": "Responsywność i dostępność (a11y)", "waga": "Ważna" },
+        { "nazwa": "Node.js / Express (podstawy)", "waga": "Przydatna" }
+      ],
+      "pytania": [
+        {
+          "pytanie": "Co to jest event loop w JavaScript?",
+          "odpowiedz": "Event loop to mechanizm, który pozwala JavaScript (jednowątkowemu) obsługiwać operacje asynchroniczne. Call stack wykonuje synchroniczny kod, Web APIs obsługują operacje I/O, a callback/promise queue czeka na wolny stack. Event loop przenosi gotowe callbacki ze stosu na stos wywołań."
+        },
+        {
+          "pytanie": "Czym różni się var, let i const?",
+          "odpowiedz": "var ma zasięg funkcji i jest hoistowany. let i const mają zasięg bloku. const nie pozwala na ponowne przypisanie (ale obiekt/tablica są mutowalne). Dziś stosujemy const domyślnie, let gdy wartość musi się zmieniać, var unikamy."
+        },
+        {
+          "pytanie": "Co to jest Virtual DOM i dlaczego React go używa?",
+          "odpowiedz": "Virtual DOM to lekka kopia prawdziwego DOM w pamięci. React porównuje poprzedni i aktualny VDOM (diffing), a do przeglądarki wysyła tylko minimalne zmiany (reconciliation). Dzięki temu aktualizacje UI są szybkie i wydajne."
+        },
+        {
+          "pytanie": "Jak optymalizujesz wydajność aplikacji React?",
+          "odpowiedz": "Używam React.memo i useMemo do unikania zbędnych rerenderów, lazy loading komponentów, code splitting z React.lazy, prawidłowego keyowania list. Sprawdzam wydajność w React DevTools Profiler."
+        },
+        {
+          "pytanie": "Opisz swój workflow pracy z Git w zespole.",
+          "odpowiedz": "Pracuję na feature branchach oddzielonych od main/develop. Tworzę małe, opisowe commity. Przed PR robię rebase na najnowszą wersję. PR opisuję z kontekstem i screenshotami. Czekam na code review, wprowadzam komentarze, squashuję commity przy merge."
+        }
+      ],
+      "wyroznienie": [
+        "Portfolio z żywymi projektami (Netlify, Vercel) — nie tylko kod na GitHubie",
+        "Znajomość narzędzi wydajności (Lighthouse, Core Web Vitals)",
+        "Umiejętność pracy z designem (Figma) i rozumienie UX",
+        "Wkład w biblioteki open source lub własna paczka npm",
+        "Doświadczenie z testami e2e (Playwright, Cypress)"
+      ]
+    },
+
+    "analityk danych": {
+      "nazwa": "Analityk Danych",
+      "zarobki": {
+        "junior": { "uop": "5 500 – 8 500 PLN", "b2b": "7 000 – 11 000 PLN" },
+        "mid":    { "uop": "10 000 – 16 000 PLN", "b2b": "13 000 – 20 000 PLN" },
+        "senior": { "uop": "17 000 – 26 000 PLN", "b2b": "20 000 – 32 000 PLN" }
+      },
+      "miasta": { "Warszawa": "+18%", "Kraków": "+10%", "Wrocław": "+8%", "inne": "baza" },
+      "umiejetnosci": [
+        { "nazwa": "SQL (złożone zapytania, okna analityczne)", "waga": "Kluczowa" },
+        { "nazwa": "Python (pandas, numpy)", "waga": "Kluczowa" },
+        { "nazwa": "Wizualizacja danych (Power BI / Tableau / matplotlib)", "waga": "Kluczowa" },
+        { "nazwa": "Excel i tabele przestawne", "waga": "Wysoka" },
+        { "nazwa": "Statystyka i prawdopodobieństwo", "waga": "Wysoka" },
+        { "nazwa": "ETL i przetwarzanie danych", "waga": "Wysoka" },
+        { "nazwa": "Google Analytics / BigQuery", "waga": "Średnia" },
+        { "nazwa": "A/B testy i eksperymenty", "waga": "Średnia" },
+        { "nazwa": "Komunikacja wyników do biznesu", "waga": "Kluczowa" },
+        { "nazwa": "Machine Learning (podstawy)", "waga": "Przydatna" }
+      ],
+      "pytania": [
+        {
+          "pytanie": "Jak podchodzisz do czyszczenia danych z dużą liczbą brakujących wartości?",
+          "odpowiedz": "Najpierw analizuję czy dane brakują losowo (MAR, MCAR, MNAR). Dla MCAR usuwa wiersze lub imputuję medianą/modą. Dla MAR stosuję imputację na podstawie innych cech (KNN, regresja). Dla MNAR szukam wzorca biznesowego i tworzę flagę binarną 'brak wartości'."
+        },
+        {
+          "pytanie": "Wytłumacz czym jest korelacja i dlaczego nie oznacza przyczynowości.",
+          "odpowiedz": "Korelacja mierzy siłę i kierunek związku liniowego między dwiema zmiennymi (–1 do 1). Nie oznacza przyczynowości, bo oba zjawiska mogą powodować wspólna trzecia zmienna (confounding variable), lub zależność może być przypadkowa (spurious correlation)."
+        },
+        {
+          "pytanie": "Jak tworzysz dashboard, który faktycznie jest używany przez biznes?",
+          "odpowiedz": "Zaczynam od rozmów z odbiorcami — jakie decyzje mają podjąć dzięki dashboardowi? Wybieram maksymalnie 5 kluczowych metryk, stosuję zasadę MECE, używam odpowiednich wykresów do danego przekazu. Po wdrożeniu zbiernam feedback i iteruję."
+        },
+        {
+          "pytanie": "Opisz sytuację gdy Twoja analiza zmieniła decyzję biznesową.",
+          "odpowiedz": "Opisuję konkretny przypadek: jaki był problem, jakie dane zebrałem, co odkryłem w analizie, jak zaprezentowałem wyniki decydentom, jaka decyzja została podjęta i jaki był jej mierzalny efekt biznesowy."
+        },
+        {
+          "pytanie": "Czym różni się GROUP BY od PARTITION BY w SQL?",
+          "odpowiedz": "GROUP BY agreguje wiersze do jednej wartości na grupę (zmniejsza liczbę wierszy). PARTITION BY to funkcja okna — oblicza wartość dla każdego wiersza w kontekście jego grupy, zachowując wszystkie wiersze. Używamy go z funkcjami okna: ROW_NUMBER(), RANK(), SUM() OVER."
+        }
+      ],
+      "wyroznienie": [
+        "Portfolio na Kaggle lub publiczne notebooki z ciekawymi analizami",
+        "Certyfikat Google Data Analytics lub Microsoft Power BI",
+        "Znajomość branży pracodawcy i typowych KPI w jego sektorze",
+        "Umiejętność opowiadania historii danymi (data storytelling)",
+        "Doświadczenie z dużymi zbiorami danych (>1M wierszy)"
+      ]
+    },
+
+    "logistyk": {
+      "nazwa": "Specjalista ds. Logistyki",
+      "zarobki": {
+        "junior": { "uop": "4 000 – 6 000 PLN", "b2b": "5 000 – 7 500 PLN" },
+        "mid":    { "uop": "6 000 – 10 000 PLN", "b2b": "7 500 – 12 000 PLN" },
+        "senior": { "uop": "10 000 – 16 000 PLN", "b2b": "12 000 – 20 000 PLN" }
+      },
+      "miasta": { "Warszawa": "+12%", "Poznań": "+8%", "Łódź": "+5%", "inne": "baza" },
+      "umiejetnosci": [
+        { "nazwa": "Znajomość systemów WMS/ERP (SAP, WMS)", "waga": "Kluczowa" },
+        { "nazwa": "Zarządzanie łańcuchem dostaw (SCM)", "waga": "Kluczowa" },
+        { "nazwa": "Planowanie zapasów i gospodarka magazynowa", "waga": "Kluczowa" },
+        { "nazwa": "Obsługa dokumentacji celnej i Incoterms", "waga": "Wysoka" },
+        { "nazwa": "Excel (zaawansowany, VLOOKUP, tabele przestawne)", "waga": "Wysoka" },
+        { "nazwa": "Negocjacje z dostawcami i przewoźnikami", "waga": "Wysoka" },
+        { "nazwa": "Znajomość prawa przewozowego", "waga": "Średnia" },
+        { "nazwa": "Język angielski (B2+)", "waga": "Wysoka" },
+        { "nazwa": "Analiza KPI logistycznych (OTD, OTIF)", "waga": "Średnia" },
+        { "nazwa": "Zarządzanie projektami i komunikacja", "waga": "Ważna" }
+      ],
+      "pytania": [
+        {
+          "pytanie": "Jak reagujesz na sytuację, gdy kluczowa dostawa jest opóźniona i grozi to wstrzymaniem produkcji?",
+          "odpowiedz": "Natychmiast kontaktuję się z dostawcą i przewoźnikiem w celu ustalenia realnego terminu. Jednocześnie informuję produkcję i szukam alternatywnych źródeł zaopatrzenia lub substytutów. Dokumentuję incydent i po jego rozwiązaniu przeprowadzam analizę przyczyn, by zapobiec powtórzeniu."
+        },
+        {
+          "pytanie": "Czym są Incoterms i dlaczego są ważne?",
+          "odpowiedz": "Incoterms to międzynarodowe reguły handlowe ICC definiujące podział kosztów, ryzyka i obowiązków między sprzedającym a kupującym. Są kluczowe, bo jasno określają kto płaci za transport, ubezpieczenie i odprawę celną, eliminując nieporozumienia w transakcjach międzynarodowych."
+        },
+        {
+          "pytanie": "Jak optymalizowałeś koszty logistyczne w poprzedniej pracy?",
+          "odpowiedz": "Opisuję konkretne działania: konsolidację przesyłek, renegocjację umów z przewoźnikami, optymalizację tras, wdrożenie cross-dockingu lub zmianę modelu magazynowania. Podaję liczby — np. obniżenie kosztów o X% lub skrócenie lead time o Y dni."
+        },
+        {
+          "pytanie": "Co to jest metoda FIFO i kiedy się ją stosuje?",
+          "odpowiedz": "FIFO (First In, First Out) to zasada, że towar przyjęty do magazynu jako pierwszy jest wydawany jako pierwszy. Stosuje się ją dla produktów z datą ważności (żywność, farmaceutyki, kosmetyki) oraz w rachunkowości dla wyceny zapasów. Minimalizuje ryzyko przeterminowania towaru."
+        },
+        {
+          "pytanie": "Jak radzisz sobie z presją czasu i wieloma pilnymi zadaniami jednocześnie?",
+          "odpowiedz": "Stosuję priorytety według wpływu na ciągłość operacji — najpierw to, co grozi zatrzymaniem produkcji lub opóźnieniem klienta. Korzystam z matrycy Eisenhowera, deleguje zadania tam gdzie to możliwe i komunikuję realistyczne terminy do interesariuszy."
+        }
+      ],
+      "wyroznienie": [
+        "Certyfikat APICS (CPIM lub CSCP) — prestiżowy standard w branży",
+        "Doświadczenie z konkretnym systemem WMS/ERP wymaganym przez pracodawcę",
+        "Znajomość języka angielskiego i ewentualnie niemieckiego na poziomie B2+",
+        "Mierzalne osiągnięcia: 'obniżyłem koszty o 15%', 'skróciłem lead time o 2 dni'",
+        "Znajomość branży pracodawcy (automotive, FMCG, e-commerce)"
+      ]
+    },
+
+    "magazynier": {
+      "nazwa": "Magazynier",
+      "zarobki": {
+        "junior": { "uop": "3 600 – 4 800 PLN", "b2b": "N/D" },
+        "mid":    { "uop": "4 500 – 6 000 PLN", "b2b": "N/D" },
+        "senior": { "uop": "5 500 – 8 000 PLN", "b2b": "N/D" }
+      },
+      "miasta": { "Warszawa": "+10%", "Poznań": "+8%", "Śląsk": "+5%", "inne": "baza" },
+      "umiejetnosci": [
+        { "nazwa": "Obsługa wózka widłowego (uprawnienia UDT)", "waga": "Kluczowa" },
+        { "nazwa": "Obsługa skanerów i systemów WMS", "waga": "Kluczowa" },
+        { "nazwa": "Kompletacja i pakowanie zamówień", "waga": "Kluczowa" },
+        { "nazwa": "Przyjęcie i wydanie towaru (dokumentacja)", "waga": "Wysoka" },
+        { "nazwa": "Inwentaryzacja i kontrola zapasów", "waga": "Wysoka" },
+        { "nazwa": "Znajomość zasad BHP", "waga": "Kluczowa" },
+        { "nazwa": "Praca w systemie FIFO/FEFO", "waga": "Wysoka" },
+        { "nazwa": "Praca w systemie zmianowym", "waga": "Średnia" },
+        { "nazwa": "Dokładność i dbałość o szczegóły", "waga": "Ważna" },
+        { "nazwa": "Praca w zespole i komunikacja", "waga": "Ważna" }
+      ],
+      "pytania": [
+        {
+          "pytanie": "Jakie uprawnienia UDT posiadasz i jakim sprzętem pracowałeś?",
+          "odpowiedz": "Wymieniam posiadane uprawnienia: wózek czołowy, unoszący, wysokiego składowania. Opisuję konkretne modele z którymi pracowałem (np. Toyota, Jungheinrich, Crown) i w jakich środowiskach (chłodnia, magazyn wysokiego składowania, cross-dock)."
+        },
+        {
+          "pytanie": "Jak postępujesz gdy znajdziesz uszkodzony towar podczas przyjęcia?",
+          "odpowiedz": "Nie przyjmuję towaru bez adnotacji — dokumentuję uszkodzenie zdjęciami, wypełniam protokół reklamacyjny i informuję przełożonego. Oddzielam uszkodzony towar i oznaczam go. Nie dopuszczam do wymieszania z towarem pełnowartościowym."
+        },
+        {
+          "pytanie": "Co to jest FEFO i kiedy je stosować?",
+          "odpowiedz": "FEFO (First Expired, First Out) to zasada wydawania towaru według daty ważności — najpierw ten z krótszą datą. Stosuje się ją w magazynach żywności, farmaceutyków i kosmetyków. Różni się od FIFO tym, że liczy się data ważności, nie data przyjęcia."
+        },
+        {
+          "pytanie": "Jak radzisz sobie ze szczytem zamówień (np. Black Friday, Święta)?",
+          "odpowiedz": "Pracuję według priorytetów wyznaczonych przez przełożonego. W szczycie skupiam się na kompletacji, minimalizuję przerwy, ściśle trzymam się procedur by nie robić błędów pod presją. Ważna jest komunikacja w zespole i wzajemna pomoc."
+        },
+        {
+          "pytanie": "Dlaczego ważne jest przestrzeganie zasad BHP w magazynie?",
+          "odpowiedz": "BHP to podstawa bezpieczeństwa własnego i kolegów. Wypadek w magazynie może skutkować poważnymi urazami lub utratą życia. Przestrzeganie zasad: odpowiednia odzież ochronna, bezpieczna obsługa wózków, wolne przejścia — to obowiązek każdego pracownika, nie tylko formalność."
+        }
+      ],
+      "wyroznienie": [
+        "Aktualne uprawnienia UDT na wózki widłowe wszystkich typów",
+        "Doświadczenie z konkretnym systemem WMS wymaganym przez pracodawcę",
+        "Pozytywne referencje od poprzednich pracodawców — rzetelność jest kluczowa",
+        "Elastyczność co do zmian (nocna, weekendy) — wiele firm to ceni",
+        "Brak wypadków i incydentów BHP w historii pracy"
+      ]
+    },
+
+    "specjalista hr": {
+      "nazwa": "Specjalista ds. HR",
+      "zarobki": {
+        "junior": { "uop": "4 500 – 6 500 PLN", "b2b": "5 500 – 8 000 PLN" },
+        "mid":    { "uop": "7 000 – 11 000 PLN", "b2b": "8 500 – 13 000 PLN" },
+        "senior": { "uop": "11 000 – 18 000 PLN", "b2b": "14 000 – 22 000 PLN" }
+      },
+      "miasta": { "Warszawa": "+15%", "Kraków": "+8%", "Wrocław": "+7%", "inne": "baza" },
+      "umiejetnosci": [
+        { "nazwa": "Rekrutacja end-to-end (sourcing, selekcja, onboarding)", "waga": "Kluczowa" },
+        { "nazwa": "Prawo pracy (Kodeks Pracy, umowy)", "waga": "Kluczowa" },
+        { "nazwa": "Systemy ATS (Workday, SAP SuccessFactors, Greenhouse)", "waga": "Wysoka" },
+        { "nazwa": "Employer Branding i LinkedIn Recruiter", "waga": "Wysoka" },
+        { "nazwa": "Oceny pracownicze i systemy performance management", "waga": "Wysoka" },
+        { "nazwa": "Komunikacja interpersonalna i empatia", "waga": "Kluczowa" },
+        { "nazwa": "Analityka HR (wskaźniki: time-to-hire, turnover)", "waga": "Średnia" },
+        { "nazwa": "Szkolenia i rozwój pracowników (L&D)", "waga": "Średnia" },
+        { "nazwa": "Excel i raportowanie HR", "waga": "Wysoka" },
+        { "nazwa": "Znajomość RODO w kontekście danych pracowniczych", "waga": "Wysoka" }
+      ],
+      "pytania": [
+        {
+          "pytanie": "Jak poradzisz sobie z trudnym menedżerem, który chce zatrudnić osobę nieodpowiadającą profilowi?",
+          "odpowiedz": "Rozmawiam z menedżerem o konkretnych wymaganiach i uzasadnieniu. Przedstawiam dane — co jest dostępne na rynku, jakie są koszty długotrwałego procesu. Proponuję kompromis: jakie kompetencje są twarde, a które można rozwinąć. Jestem partnerem biznesowym, nie wykonawcą zamówień."
+        },
+        {
+          "pytanie": "Jak mierzysz skuteczność procesu rekrutacyjnego?",
+          "odpowiedz": "Kluczowe KPI to: time-to-fill (czas do zamknięcia), time-to-hire (czas do akceptacji oferty), cost-per-hire, quality of hire (wyniki ocen po 6 miesiącach), offer acceptance rate i źródło kandydatów. Analizuję lejek rekrutacyjny i szukam wąskich gardeł."
+        },
+        {
+          "pytanie": "Opisz sytuację gdy musiałeś odmówić kandydatowi i jak to zrobiłeś.",
+          "odpowiedz": "Informowałem kandydata możliwie szybko, osobiście lub telefonicznie dla zaawansowanych etapów. Podawałem konstruktywny feedback — co zadecydowało i co kandydat mógłby rozwinąć. Dbałem o pozytywne doświadczenie kandydata nawet przy odmowie, bo to element employer brandingu."
+        },
+        {
+          "pytanie": "Jakie znasz metody selekcji kandydatów i kiedy je stosujesz?",
+          "odpowiedz": "Analiza CV i listu motywacyjnego, testy kompetencyjne, rozmowy ustrukturyzowane (STAR), assessment center dla stanowisk wyższego szczebla, case study dla specjalistów. Dobór metody zależy od poziomu stanowiska, liczby kandydatów i dostępnych zasobów."
+        },
+        {
+          "pytanie": "Co to jest metoda STAR i jak jej używasz w rozmowach rekrutacyjnych?",
+          "odpowiedz": "STAR to technika zadawania pytań behawioralnych: Situation (sytuacja), Task (zadanie), Action (działanie), Result (wynik). Pytam kandydata o konkretne sytuacje z przeszłości — są lepszym predyktorem przyszłych zachowań niż pytania hipotetyczne."
+        }
+      ],
+      "wyroznienie": [
+        "Certyfikat SHRM-CP, PHR lub dyplom studiów podyplomowych HR",
+        "Doświadczenie z konkretnym ATS wymaganym przez pracodawcę",
+        "Znajomość branży — rekruterzy IT w IT, rekruterzy medyczni w medycynie",
+        "Portfolio zamkniętych rekrutacji na trudne stanowiska specjalistyczne",
+        "Aktywność na LinkedIn — komentarze, artykuły, widoczność w środowisku"
+      ]
+    },
+
+    "sprzedawca": {
+      "nazwa": "Sprzedawca / Przedstawiciel Handlowy",
+      "zarobki": {
+        "junior": { "uop": "4 000 – 6 000 PLN + premia", "b2b": "5 000 – 8 000 PLN" },
+        "mid":    { "uop": "6 000 – 10 000 PLN + premia", "b2b": "8 000 – 14 000 PLN" },
+        "senior": { "uop": "10 000 – 18 000 PLN + premia", "b2b": "14 000 – 25 000 PLN" }
+      },
+      "miasta": { "Warszawa": "+12%", "Kraków": "+8%", "inne": "baza" },
+      "umiejetnosci": [
+        { "nazwa": "Techniki sprzedaży (SPIN, Challenger, Solution Selling)", "waga": "Kluczowa" },
+        { "nazwa": "Prospecting i pozyskiwanie klientów", "waga": "Kluczowa" },
+        { "nazwa": "Negocjacje handlowe", "waga": "Kluczowa" },
+        { "nazwa": "CRM (Salesforce, HubSpot, Pipedrive)", "waga": "Wysoka" },
+        { "nazwa": "Budowanie relacji i networking", "waga": "Kluczowa" },
+        { "nazwa": "Prezentacje handlowe (oferty, demo)", "waga": "Wysoka" },
+        { "nazwa": "Obsługa posprzedażowa i upselling", "waga": "Wysoka" },
+        { "nazwa": "Analiza lejka sprzedażowego i pipeline", "waga": "Średnia" },
+        { "nazwa": "Odporność na odmowę i motywacja wewnętrzna", "waga": "Kluczowa" },
+        { "nazwa": "Znajomość produktu/branży pracodawcy", "waga": "Wysoka" }
+      ],
+      "pytania": [
+        {
+          "pytanie": "Sprzedaj mi ten długopis. (klasyczne pytanie)",
+          "odpowiedz": "Najpierw pytam o potrzeby: 'Czy często piszesz odręcznie? Co jest dla Ciebie ważne w długopisie?' Na podstawie odpowiedzi prezentuję korzyści, a nie cechy. Zamykam sprzedaż: 'Czy chciałby Pan wypróbować?' To pokazuje podejście konsultacyjne, nie akwizytorskie."
+        },
+        {
+          "pytanie": "Jak reagujesz na obiekcję 'to za drogo'?",
+          "odpowiedz": "Nie obniżam ceny od razu. Pytam: 'Za drogo w porównaniu do czego?' — to odkrywa prawdziwą obiekcję. Jeśli to kwestia budżetu, szukam mniejszego zakresu. Jeśli wartości, lepiej uzasadniam ROI. Jeśli taktyka negocjacyjna, stosuję technikę wymiany ustępstw."
+        },
+        {
+          "pytanie": "Jak budujesz długoterminowe relacje z klientami?",
+          "odpowiedz": "Regularny kontakt — nie tylko gdy chcę sprzedać, ale też gdy mogę pomóc. Pamiętam o ważnych datach i potrzebach klienta. Dostarczam wartość: artykuły branżowe, zaproszenia na eventy. Szybko reaguję na problemy. Klient ma czuć, że mam go na uwadze."
+        },
+        {
+          "pytanie": "Opisz swój największy sukces sprzedażowy.",
+          "odpowiedz": "Podaję konkretny przykład z liczbami: wartość kontraktu, jak pozyskałem klienta, co było główną przeszkodą, jaką strategię zastosowałem. Ważne by pokazać powtarzalny proces, a nie przypadkowe szczęście."
+        },
+        {
+          "pytanie": "Jak radzisz sobie z odrzuceniem i trudnymi miesiącami?",
+          "odpowiedz": "Odmowa to część pracy — analizuję ją jako informację zwrotną, nie porażkę osobistą. Skupiam się na kontrolowalnych działaniach: liczbie kontaktów, rozmów, ofert. Śledzę swoje metryki i wiem że dobra praca w dłuższym horyzoncie przynosi wyniki."
+        }
+      ],
+      "wyroznienie": [
+        "Udokumentowane wyniki: '120% planu przez 3 kwartały z rzędu'",
+        "Lista zamkniętych dużych klientów lub branż (referencje)",
+        "Certyfikat Salesforce, HubSpot lub szkolenia z technik sprzedaży",
+        "Znajomość branży pracodawcy i jej specyfiki zakupowej",
+        "Aktywna sieć kontaktów (LinkedIn 500+) w branży docelowej"
+      ]
+    },
+
+    "project manager": {
+      "nazwa": "Project Manager",
+      "zarobki": {
+        "junior": { "uop": "6 000 – 9 000 PLN", "b2b": "7 500 – 11 000 PLN" },
+        "mid":    { "uop": "10 000 – 16 000 PLN", "b2b": "13 000 – 20 000 PLN" },
+        "senior": { "uop": "16 000 – 26 000 PLN", "b2b": "20 000 – 32 000 PLN" }
+      },
+      "miasta": { "Warszawa": "+15%", "Kraków": "+10%", "Wrocław": "+8%", "inne": "baza" },
+      "umiejetnosci": [
+        { "nazwa": "Metodyki Agile (Scrum, Kanban) i Waterfall", "waga": "Kluczowa" },
+        { "nazwa": "Zarządzanie ryzykiem i budżetem projektu", "waga": "Kluczowa" },
+        { "nazwa": "Narzędzia PM (Jira, MS Project, Asana, Monday)", "waga": "Wysoka" },
+        { "nazwa": "Komunikacja z interesariuszami i stakeholder management", "waga": "Kluczowa" },
+        { "nazwa": "Planowanie i harmonogramowanie (WBS, Gantt)", "waga": "Wysoka" },
+        { "nazwa": "Certyfikat PMP, PRINCE2 lub PSM", "waga": "Wysoka" },
+        { "nazwa": "Facylitacja spotkań i warsztatów", "waga": "Wysoka" },
+        { "nazwa": "Raportowanie statusu i eskalacja", "waga": "Wysoka" },
+        { "nazwa": "Przywództwo bez autorytetu formalnego", "waga": "Kluczowa" },
+        { "nazwa": "Znajomość dziedziny projektu (IT, budowlanka, FMCG)", "waga": "Ważna" }
+      ],
+      "pytania": [
+        {
+          "pytanie": "Opisz sytuację gdy projekt był poważnie opóźniony. Co zrobiłeś?",
+          "odpowiedz": "Najpierw diagnoza: identyfikacja ścieżki krytycznej i przyczyn opóźnienia. Potem opcje: fast tracking (równoległe zadania), crashing (dodatkowe zasoby), zmiana zakresu lub przesunięcie terminu. Komunikuję uczciwie do sponsora z rekomendacją, nie problemem. Wyciągam wnioski do rejestru lessons learned."
+        },
+        {
+          "pytanie": "Jak zarządzasz konfliktem w zespole projektowym?",
+          "odpowiedz": "Nie ignoruję konfliktu — im dłużej trwa, tym kosztowniejszy. Rozmawiam z każdą stroną osobno, szukam źródła sporu (zasoby, priorytety, wartości). Mediuję spotkanie, skupiam na problemie nie osobach. W projekcie conflict of interest dokumentuję i eskaluję do sponsora."
+        },
+        {
+          "pytanie": "Czym różni się Scrum od Kanbana?",
+          "odpowiedz": "Scrum opiera się na sprintach (iteracje 1-4 tygodnie), rolach (PO, SM, Dev Team) i ceremoniach (sprint planning, daily, review, retro). Kanban to ciągły przepływ pracy bez sprintów, z limitem WIP na kolumny. Scrum sprawdza się przy nowym produkcie, Kanban przy bieżącym wsparciu i maintenance."
+        },
+        {
+          "pytanie": "Jak piszesz dobry zakres projektu (scope)?",
+          "odpowiedz": "Używam techniki SMART dla celów, buduję WBS z zespołem, jasno definiuję co jest IN i OUT of scope. Dostaję podpis sponsora i kluczowych interesariuszy na dokumencie scope. Zarządzam zmianami przez formalny change request process."
+        },
+        {
+          "pytanie": "Jakie KPI stosujesz do monitorowania zdrowia projektu?",
+          "odpowiedz": "Schedule Performance Index (SPI) i Cost Performance Index (CPI) z metodyki EVM, burn-down chart dla Scrum, velocity, liczba otwartych ryzyk i issues, procent ukończonych kamieni milowych oraz satysfakcja interesariuszy."
+        }
+      ],
+      "wyroznienie": [
+        "Certyfikat PMP (PMI), PRINCE2 Practitioner lub Professional Scrum Master (PSM II)",
+        "Portfolio: lista zakończonych projektów z budżetem, zespołem i wynikami",
+        "Znajomość branży pracodawcy — PM w IT to inne wyzwania niż PM w budownictwie",
+        "Doświadczenie z konkretnym narzędziem PM wymaganym przez firmę (Jira, Monday)",
+        "Referencje od sponsorów i kierowników z poprzednich projektów"
+      ]
+    },
+
+    "ksiegowy": {
+      "nazwa": "Księgowy / Specjalista ds. Finansów",
+      "zarobki": {
+        "junior": { "uop": "4 500 – 6 500 PLN", "b2b": "5 500 – 8 000 PLN" },
+        "mid":    { "uop": "7 000 – 11 000 PLN", "b2b": "8 500 – 13 000 PLN" },
+        "senior": { "uop": "11 000 – 18 000 PLN", "b2b": "14 000 – 22 000 PLN" }
+      },
+      "miasta": { "Warszawa": "+15%", "Kraków": "+10%", "Wrocław": "+8%", "inne": "baza" },
+      "umiejetnosci": [
+        { "nazwa": "Znajomość ustawy o rachunkowości i KSR", "waga": "Kluczowa" },
+        { "nazwa": "Obsługa systemów FK (Enova, SAP, Symfonia, Optima)", "waga": "Kluczowa" },
+        { "nazwa": "Rozliczenia VAT, CIT, PIT", "waga": "Kluczowa" },
+        { "nazwa": "Sprawozdania finansowe (bilans, RZiS, CF)", "waga": "Wysoka" },
+        { "nazwa": "Excel (zaawansowany: VLOOKUP, tabele, Power Query)", "waga": "Wysoka" },
+        { "nazwa": "Kadry i płace (znajomość ZUS, PPK)", "waga": "Średnia" },
+        { "nazwa": "JPK i e-Sprawozdania (obowiązki cyfrowe)", "waga": "Wysoka" },
+        { "nazwa": "MSSF / MSR (dla firm notowanych lub z kapitałem zagranicznym)", "waga": "Przydatna" },
+        { "nazwa": "Dokładność, terminowość i odporność na stres w zamknięciach", "waga": "Kluczowa" },
+        { "nazwa": "Komunikacja z urzędami (US, ZUS)", "waga": "Wysoka" }
+      ],
+      "pytania": [
+        {
+          "pytanie": "Jak przygotowujesz zamknięcie miesiąca?",
+          "odpowiedz": "Stosuję checklistę: weryfikacja kompletności dokumentów, uzgodnienie sald kont z wyciągami bankowymi, rozliczenie amortyzacji i rezerw, weryfikacja rozrachunków, naliczenie VAT i przygotowanie JPK. Dbam o terminowość i weryfikację krzyżową między modułami systemu FK."
+        },
+        {
+          "pytanie": "Czym różni się leasing operacyjny od finansowego w ujęciu podatkowym?",
+          "odpowiedz": "W leasingu operacyjnym rata jest kosztem podatkowym, a przedmiot amortyzuje finansujący. W leasingu finansowym leasingobiorca amortyzuje przedmiot, a kosztem jest tylko część odsetkowa raty. Po zmianach MSSF 16 oba rodzaje ujmowane są w bilansie podobnie, ale różnice podatkowe pozostają."
+        },
+        {
+          "pytanie": "Jak postępujesz gdy odkryjesz błąd w księgowaniu z poprzedniego okresu?",
+          "odpowiedz": "Oceniam istotność błędu. Błąd nieistotny koryguje w bieżącym okresie. Błąd istotny koryguje przez wynik lat ubiegłych (kapitał własny) lub wymaga korygowania sprawozdań. Dokumentuję przyczynę błędu i wdrażam kontrolę zapobiegawczą, by się nie powtórzył."
+        },
+        {
+          "pytanie": "Jak interpretujesz rachunek przepływów pieniężnych?",
+          "odpowiedz": "Analizuję trzy obszary: działalność operacyjna (gotówka z core biznesu — powinna być dodatnia i rosnąca), inwestycyjna (ujemna to zwykle dobry znak — firma inwestuje) i finansowa (emisja długu/kapitału). Firma może być rentowna przy ujemnym cash flow — dlatego CF jest kluczowym uzupełnieniem RZiS."
+        },
+        {
+          "pytanie": "Co to jest zasada ostrożności w rachunkowości?",
+          "odpowiedz": "Zasada ostrożności nakazuje wyceniać aktywa nie wyżej, a pasywa (zobowiązania) nie niżej niż wynikałoby z sytuacji. Ujmujemy rezerwy na przewidywalne straty i zobowiązania warunkowe, ale nie antycypujemy niezrealizowanych zysków. Chroni to przed zawyżaniem wyniku i aktywów."
+        }
+      ],
+      "wyroznienie": [
+        "Certyfikat SKwP (stopień I-III) lub ACCA — wyróżnik na rynku",
+        "Doświadczenie z konkretnym systemem FK wymaganym przez pracodawcę",
+        "Znajomość specyfiki branży: produkcja, handel, usługi mają inne wyzwania",
+        "Doświadczenie z JPK_V7, e-fakturą (KSeF) — cyfryzacja rośnie w znaczeniu",
+        "Zaświadczenie o niekaralności — wymagane przez wiele firm na stanowiskach finansowych"
+      ]
+    },
+
+    "grafik": {
+      "nazwa": "Grafik / Projektant Graficzny",
+      "zarobki": {
+        "junior": { "uop": "4 000 – 6 000 PLN", "b2b": "5 000 – 7 500 PLN" },
+        "mid":    { "uop": "6 500 – 10 000 PLN", "b2b": "8 000 – 13 000 PLN" },
+        "senior": { "uop": "10 000 – 16 000 PLN", "b2b": "13 000 – 20 000 PLN" }
+      },
+      "miasta": { "Warszawa": "+15%", "Kraków": "+10%", "Wrocław": "+8%", "inne": "baza" },
+      "umiejetnosci": [
+        { "nazwa": "Adobe Creative Suite (Photoshop, Illustrator, InDesign)", "waga": "Kluczowa" },
+        { "nazwa": "Figma (UI/UX design i prototypowanie)", "waga": "Kluczowa" },
+        { "nazwa": "Tożsamość wizualna i brand design", "waga": "Wysoka" },
+        { "nazwa": "Typografia i teoria koloru", "waga": "Wysoka" },
+        { "nazwa": "Projektowanie materiałów drukowanych", "waga": "Wysoka" },
+        { "nazwa": "Social media design (formaty, animacje)", "waga": "Wysoka" },
+        { "nazwa": "After Effects / animacje (podstawy)", "waga": "Średnia" },
+        { "nazwa": "Zrozumienie potrzeb klienta i brief", "waga": "Kluczowa" },
+        { "nazwa": "Przygotowanie do druku (prepress, CMYK)", "waga": "Średnia" },
+        { "nazwa": "Myślenie wizualne i kreatywność", "waga": "Kluczowa" }
+      ],
+      "pytania": [
+        {
+          "pytanie": "Jak interpretujesz brief klienta i co robisz gdy jest nieprecyzyjny?",
+          "odpowiedz": "Zawsze zadaję pytania doprecyzowujące: jaki jest cel projektu, kto jest odbiorcą, jaki ton komunikacji, jakie ograniczenia (format, kolory brandowe, termin). Lepiej poświęcić 15 minut na pytania niż robić projekt w złym kierunku."
+        },
+        {
+          "pytanie": "Jak reagujesz na krytykę swojej pracy przez klienta?",
+          "odpowiedz": "Słucham bez defensywności i pytam o konkrety: 'Co dokładnie nie odpowiada? Jaki nastrój chciałby Pan osiągnąć?' Oddzielam siebie od projektu — krytyka dotyczy pracy, nie mnie. Proponuję korekty i jeśli klient zmierza w złym kierunku, asertywnie tłumaczę dlaczego tak uważam."
+        },
+        {
+          "pytanie": "Opisz swój ulubiony projekt z portfolio i dlaczego go lubisz.",
+          "odpowiedz": "Wybieram projekt który dobrze rozwiązuje problem klienta, a nie tylko ładnie wygląda. Opisuję wyzwanie, proces twórczy, decyzje projektowe i jak wyniki projektu wpłynęły na klienta. Ważne by pokazać myślenie strategiczne, nie tylko estetyczne."
+        },
+        {
+          "pytanie": "Jak dbasz o spójność wizualną marki w wielu materiałach?",
+          "odpowiedz": "Tworzę i stosuję brand book lub design system: paleta kolorów (hex i CMYK), fonty z hierarchią, logo z polami ochronnymi, grid i spacing. W Figmie używam komponentów i bibliotek shared. Dokumentuję zasady, by cały zespół mógł tworzyć spójne materiały."
+        },
+        {
+          "pytanie": "Czym różni się RGB od CMYK i kiedy używasz każdego?",
+          "odpowiedz": "RGB to model addytywny (światło) — używamy do projektów cyfrowych: strony www, social media, prezentacje. CMYK to model subtraktywny (farby) — obowiązuje przy materiałach drukowanych. Projekt w RGB wydrukowany bez konwersji może mieć przekłamane kolory — szczególnie intensywne odcienie."
+        }
+      ],
+      "wyroznienie": [
+        "Silne portfolio na Behance lub własnej stronie — ważniejsze niż dyplom",
+        "Doświadczenie w konkretnej branży pracodawcy (e-commerce, agencja, B2B)",
+        "Znajomość narzędzi używanych przez zespół (Figma, Adobe XD, Canva Pro)",
+        "Umiejętność animacji i motion graphics — rosnące zapotrzebowanie",
+        "Szybkość pracy i dotrzymywanie deadlineów — w agencjach to priorytet"
+      ]
+    },
+
+    "specjalista marketingu": {
+      "nazwa": "Specjalista ds. Marketingu",
+      "zarobki": {
+        "junior": { "uop": "4 500 – 6 500 PLN", "b2b": "5 500 – 8 000 PLN" },
+        "mid":    { "uop": "7 000 – 11 000 PLN", "b2b": "8 500 – 14 000 PLN" },
+        "senior": { "uop": "12 000 – 20 000 PLN", "b2b": "15 000 – 25 000 PLN" }
+      },
+      "miasta": { "Warszawa": "+18%", "Kraków": "+10%", "Wrocław": "+8%", "inne": "baza" },
+      "umiejetnosci": [
+        { "nazwa": "Google Ads i Meta Ads (kampanie płatne)", "waga": "Kluczowa" },
+        { "nazwa": "SEO (on-page, off-page, analiza słów kluczowych)", "waga": "Wysoka" },
+        { "nazwa": "Google Analytics 4 i Tag Manager", "waga": "Kluczowa" },
+        { "nazwa": "Content marketing i copywriting", "waga": "Wysoka" },
+        { "nazwa": "Social media marketing (strategia, harmonogram)", "waga": "Wysoka" },
+        { "nazwa": "Email marketing (Mailchimp, GetResponse)", "waga": "Wysoka" },
+        { "nazwa": "Marketing automation (HubSpot, ActiveCampaign)", "waga": "Średnia" },
+        { "nazwa": "Analiza danych i raportowanie (ROI, ROAS, CPA)", "waga": "Kluczowa" },
+        { "nazwa": "UX i CRO (optymalizacja konwersji)", "waga": "Średnia" },
+        { "nazwa": "Zarządzanie budżetem marketingowym", "waga": "Wysoka" }
+      ],
+      "pytania": [
+        {
+          "pytanie": "Jak mierzysz skuteczność kampanii marketingowej?",
+          "odpowiedz": "Zaczynam od celu kampanii — świadomość marki to zasięg i CPM, leady to CPL i konwersja, sprzedaż to ROAS i CPA. Śledzę przez GA4 i narzędzia platform. Porównuję do benchmarków branżowych i poprzednich kampanii. Raportowanie tygodniowe z rekomendacjami optymalizacji."
+        },
+        {
+          "pytanie": "Co to jest lejek marketingowy i jak go optymalizujesz?",
+          "odpowiedz": "Lejek to TOFU (awareness) — MOFU (consideration) — BOFU (conversion). Dla każdego etapu inne treści i kanały: TOFU = content, social media; MOFU = remarketing, email nurturing; BOFU = oferty, testimoniale, demo. Analizuję gdzie użytkownicy odpływają i optymalizuję te etapy."
+        },
+        {
+          "pytanie": "Opisz kampanię, którą prowadziłeś od początku do końca.",
+          "odpowiedz": "Opisuję cel, grupę docelową, kanały, budżet, kreacje, optymalizację w trakcie i wyniki. Kluczowe: podaję konkretne liczby (ROAS 4:1, 200 leadów przy CPL 35 zł) i co nauczyłem się z kampanii."
+        },
+        {
+          "pytanie": "Jak radzisz sobie ze spadkiem wyników kampanii?",
+          "odpowiedz": "Diagnoza: sprawdzam czy problem leży w zasięgu (fatigue, audience saturation), kreacji (banner blindness), landingu (konwersja) czy zewnętrzny (sezonowość, konkurencja). Działam: świeże kreacje, nowe grupy odbiorców, A/B test landing page, zmiana stawek."
+        },
+        {
+          "pytanie": "Czym różni się marketing B2B od B2C?",
+          "odpowiedz": "B2B: dłuższy cykl zakupowy (tygodnie-miesiące), decyzja grupowa (komitet zakupowy), kanały: LinkedIn, content, events, cold outreach. B2C: krótszy cykl, decyzja indywidualna, kanały: social media, Google Ads, influencerzy. B2B wymaga edukacji i budowania zaufania, B2C często emocji i impulsu."
+        }
+      ],
+      "wyroznienie": [
+        "Certyfikaty: Google Ads, Meta Blueprint, HubSpot Marketing",
+        "Portfolio kampanii z konkretnymi wynikami (nie tylko opisy, liczby!)",
+        "Znajomość branży pracodawcy i jej specyfiki zakupowej",
+        "Doświadczenie z narzędziem CRM lub marketing automation używanym w firmie",
+        "Własny projekt/blog gdzie testujesz strategie — pokazuje inicjatywę"
+      ]
+    },
+
+    "kierowca": {
+      "nazwa": "Kierowca Zawodowy / Kierowca-Mechanik",
+      "zarobki": {
+        "junior": { "uop": "4 500 – 6 500 PLN", "b2b": "N/D" },
+        "mid":    { "uop": "6 000 – 9 000 PLN", "b2b": "N/D" },
+        "senior": { "uop": "8 000 – 14 000 PLN", "b2b": "N/D" }
+      },
+      "miasta": { "Warszawa": "+10%", "Trójmiasto": "+8%", "inne": "baza" },
+      "umiejetnosci": [
+        { "nazwa": "Prawo jazdy kat. C/C+E (dla TIR i ciągników)", "waga": "Kluczowa" },
+        { "nazwa": "Kwalifikacja wstępna (kod 95) i karta kierowcy", "waga": "Kluczowa" },
+        { "nazwa": "Znajomość tachografu cyfrowego i czasu pracy", "waga": "Kluczowa" },
+        { "nazwa": "Przepisy drogowe (krajowe i międzynarodowe)", "waga": "Kluczowa" },
+        { "nazwa": "Obsługa codzienna pojazdu i kontrole techniczne", "waga": "Wysoka" },
+        { "nazwa": "Dokumentacja przewozowa (CMR, listy przewozowe)", "waga": "Wysoka" },
+        { "nazwa": "Nawigacja GPS i planowanie tras", "waga": "Wysoka" },
+        { "nazwa": "Znajomość języka angielskiego lub niemieckiego (podstawy)", "waga": "Przydatna" },
+        { "nazwa": "Odporność psychofizyczna i praca w nocy", "waga": "Ważna" },
+        { "nazwa": "Dbałość o stan techniczny pojazdu", "waga": "Kluczowa" }
+      ],
+      "pytania": [
+        {
+          "pytanie": "Jak planujesz trasę uwzględniając przepisy o czasie pracy kierowcy?",
+          "odpowiedz": "Korzystam z tachografu i rozporządzenia 561/2006: po 4,5h jazdy 45 minut przerwy, maksymalnie 9h dziennie (do 10h 2x/tydzień), 56h tygodniowo, 90h w 2 tygodniach. Planuję odpoczynki z wyprzedzeniem, uwzględniam miejsca do parkowania TIR i warunki drogowe."
+        },
+        {
+          "pytanie": "Co robisz w przypadku wypadku lub kolizji?",
+          "odpowiedz": "Zabezpieczam miejsce zdarzenia (trójkąt, kamizelka), sprawdzam czy są poszkodowani i wzywam pomoc. Nie przyznaję winy. Fotografuję zdarzenie, zbieram dane uczestników i świadków. Wypełniam oświadczenie lub wzywam policję. Natychmiast informuję dysponenta i ubezpieczyciela."
+        },
+        {
+          "pytanie": "Jak dbasz o stan techniczny pojazdu?",
+          "odpowiedz": "Codzienna obsługa przed wyjazdem: poziomy płynów, ciśnienie w ogumieniu, oświetlenie, hamulce, lusterka. Zgłaszam każdą usterką przed trasą — nie wyruszam z pojazdem niesprawnym technicznie. Prowadzę książkę serwisową i pilnuję terminów przeglądów."
+        },
+        {
+          "pytanie": "Jak radzisz sobie z trudnymi warunkami atmosferycznymi?",
+          "odpowiedz": "Dostosowuję prędkość do warunków — przepisy to minimum, bezpieczeństwo to priorytet. Na śliskiej nawierzchni zwiększam odległość od poprzedzającego pojazdu do minimum 3-4 sekund. W bardzo złych warunkach zatrzymuję się i czekam — żaden termin nie jest wart ryzyka."
+        },
+        {
+          "pytanie": "Opisz sytuację gdy musiałeś podjąć trudną decyzję na trasie.",
+          "odpowiedz": "Opisuję konkretną sytuację: np. awaria na trasie, trudne warunki, problem z dokumentami na granicy. Pokazuję spokój, właściwe priorytety (bezpieczeństwo > termin) i komunikację z dyspozytorem."
+        }
+      ],
+      "wyroznienie": [
+        "Czyste konto punktów karnych i brak wypadków — weryfikowane przez pracodawców",
+        "Dodatkowe uprawnienia: ADR (materiały niebezpieczne), dźwig HDS",
+        "Doświadczenie w konkretnym typie transportu (chłodniczy, ponadnormatywny, międzynarodowy)",
+        "Znajomość języka angielskiego lub niemieckiego — niezbędna w transporcie międzynarodowym",
+        "Referencje od poprzednich pracodawców potwierdzające rzetelność"
+      ]
+    }
+  }
+}

@@ -2,11 +2,11 @@ import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dotenv import load_dotenv
 import streamlit as st
-import anthropic
 
 load_dotenv()
 
 from services.base import SOURCE_STYLES
+from services.analiza import find_stanowisko, list_stanowiska
 from services.jooble import search_jooble
 from services.justjoinit import search_justjoinit
 from services.nofluffjobs import search_nofluffjobs
@@ -248,24 +248,39 @@ with tab_search:
             unsafe_allow_html=True,
         )
 
+_WAGA_COLOR = {
+    "Kluczowa": "#4ADE80",
+    "Wysoka":   "#60A5FA",
+    "Średnia":  "#FBBF24",
+    "Ważna":    "#FBBF24",
+    "Przydatna":"#94A3B8",
+}
+
 with tab_analysis:
-    st.markdown("### 🤖 Analiza stanowiska pracy")
+    st.markdown("### 📊 Analiza stanowiska pracy")
     st.markdown(
         "<p style='color:#94A3B8;margin-top:-8px;margin-bottom:20px;'>"
-        "Wpisz nazwę stanowiska i otrzymaj szczegółową analizę rynku pracy w Polsce</p>",
+        "Wpisz nazwę stanowiska i sprawdź zarobki, wymagane umiejętności i wskazówki rekrutacyjne</p>",
         unsafe_allow_html=True,
     )
 
+    available = list_stanowiska()
     col_pos, col_abtn = st.columns([4, 1])
     with col_pos:
         position_name = st.text_input(
             "Stanowisko",
-            placeholder="np. programista Python, analityk danych, project manager...",
+            placeholder="np. programista Python, logistyk, analityk danych, HR...",
             label_visibility="collapsed",
             key="position_input",
         )
     with col_abtn:
-        analyze_clicked = st.button("🤖 Analizuj", type="primary", use_container_width=True)
+        analyze_clicked = st.button("🔎 Analizuj", type="primary", use_container_width=True)
+
+    st.markdown(
+        "<p style='color:#475569;font-size:0.8rem;margin-top:4px;'>Dostępne stanowiska: "
+        + ", ".join(f"<em>{n}</em>" for n in available) + "</p>",
+        unsafe_allow_html=True,
+    )
 
     st.markdown("---")
 
@@ -273,52 +288,90 @@ with tab_analysis:
         if not position_name.strip():
             st.warning("Wpisz nazwę stanowiska, aby rozpocząć analizę.")
         else:
-            api_key = st.secrets.get("ANTHROPIC_API_KEY", os.getenv("ANTHROPIC_API_KEY", ""))
-            if not api_key:
-                st.error("Analiza AI jest chwilowo niedostępna. Skontaktuj się z administratorem aplikacji.")
+            dane = find_stanowisko(position_name.strip())
+            if dane is None:
+                st.error(
+                    f"Nie znaleziono danych dla stanowiska **{position_name.strip()}**. "
+                    "Spróbuj innej nazwy lub skorzystaj z listy dostępnych stanowisk powyżej."
+                )
             else:
-                pos = position_name.strip()
-                prompt = f"""Przygotuj szczegółową analizę stanowiska "{pos}" na polskim rynku pracy.
+                st.markdown(
+                    f"<h3 style='color:#F1F5F9;margin-bottom:20px;'>📋 {dane['nazwa']}</h3>",
+                    unsafe_allow_html=True,
+                )
 
-Odpowiedź podziel na 4 sekcje z nagłówkami:
+                # --- Zarobki ---
+                st.markdown("#### 💰 Widełki płacowe w Polsce (brutto/miesiąc)")
+                z = dane["zarobki"]
+                col_j, col_m, col_s = st.columns(3)
+                for col, poziom, label in [
+                    (col_j, "junior", "Junior"),
+                    (col_m, "mid",    "Mid / Regular"),
+                    (col_s, "senior", "Senior"),
+                ]:
+                    with col:
+                        st.markdown(
+                            f"<div style='background:#1E293B;border:1px solid #334155;"
+                            f"border-radius:10px;padding:16px;text-align:center;'>"
+                            f"<div style='color:#94A3B8;font-size:0.8rem;margin-bottom:6px;'>{label}</div>"
+                            f"<div style='color:#4ADE80;font-weight:700;font-size:0.95rem;'>UoP: {z[poziom]['uop']}</div>"
+                            f"<div style='color:#60A5FA;font-size:0.88rem;margin-top:4px;'>B2B: {z[poziom]['b2b']}</div>"
+                            f"</div>",
+                            unsafe_allow_html=True,
+                        )
 
-## 💰 Średnie zarobki w Polsce
-Podaj realistyczne widełki wynagrodzeń brutto miesięcznie dla różnych poziomów doświadczenia (junior, mid, senior) oraz dla różnych miast (Warszawa, Kraków, Wrocław, inne). Uwzględnij B2B i UoP.
+                miasta = dane.get("miasta", {})
+                if miasta:
+                    modif = " &nbsp;·&nbsp; ".join(
+                        f"<span style='color:#94A3B8'>{m}:</span> <span style='color:#F1F5F9'>{v}</span>"
+                        for m, v in miasta.items()
+                    )
+                    st.markdown(
+                        f"<p style='color:#64748B;font-size:0.82rem;margin-top:8px;'>Korekta lokalizacji: {modif}</p>",
+                        unsafe_allow_html=True,
+                    )
 
-## 🛠️ Top 10 wymaganych umiejętności
-Wymień 10 najważniejszych umiejętności technicznych i miękkich wymaganych na tym stanowisku. Każdą umiejętność krótko opisz i oceń jej ważność.
+                st.markdown("---")
 
-## ❓ 5 pytań rekrutacyjnych z odpowiedziami
-Podaj 5 typowych pytań zadawanych podczas rozmów kwalifikacyjnych na to stanowisko. Dla każdego pytania daj wzorcową odpowiedź.
+                # --- Umiejętności ---
+                st.markdown("#### 🛠️ Top 10 wymaganych umiejętności")
+                for i, u in enumerate(dane["umiejetnosci"], 1):
+                    kolor = _WAGA_COLOR.get(u["waga"], "#94A3B8")
+                    st.markdown(
+                        f"<div style='display:flex;align-items:center;gap:12px;"
+                        f"padding:8px 0;border-bottom:1px solid #1E293B;'>"
+                        f"<span style='color:#475569;font-size:0.8rem;width:20px;text-align:right;'>{i}.</span>"
+                        f"<span style='color:#F1F5F9;flex:1;'>{u['nazwa']}</span>"
+                        f"<span style='background:{kolor}22;color:{kolor};padding:2px 8px;"
+                        f"border-radius:12px;font-size:0.72rem;font-weight:600;'>{u['waga']}</span>"
+                        f"</div>",
+                        unsafe_allow_html=True,
+                    )
 
-## ⭐ Jak wyróżnić się spośród kandydatów
-Podaj konkretne, praktyczne wskazówki jak wyróżnić swoją kandydaturę spośród innych aplikantów na to stanowisko."""
+                st.markdown("---")
 
-                client = anthropic.Anthropic(api_key=api_key)
-                output_placeholder = st.empty()
-                full_text = ""
+                # --- Pytania rekrutacyjne ---
+                st.markdown("#### ❓ Pytania rekrutacyjne z odpowiedziami")
+                for i, pq in enumerate(dane["pytania"], 1):
+                    with st.expander(f"Pytanie {i}: {pq['pytanie']}"):
+                        st.markdown(
+                            f"<div style='color:#CBD5E1;line-height:1.6;'>{pq['odpowiedz']}</div>",
+                            unsafe_allow_html=True,
+                        )
 
-                try:
-                    with st.spinner(f"Analizuję stanowisko: {pos}..."):
-                        with client.messages.stream(
-                            model="claude-opus-4-7",
-                            max_tokens=2048,
-                            thinking={"type": "adaptive"},
-                            messages=[{"role": "user", "content": prompt}],
-                        ) as stream:
-                            for text in stream.text_stream:
-                                full_text += text
-                                output_placeholder.markdown(
-                                    f"<div style='background:#1E293B;border:1px solid #334155;"
-                                    f"border-radius:12px;padding:24px;color:#F1F5F9;'>{full_text}</div>",
-                                    unsafe_allow_html=True,
-                                )
-                except anthropic.AuthenticationError:
-                    st.error("Analiza AI jest chwilowo niedostępna. Skontaktuj się z administratorem aplikacji.")
-                except anthropic.RateLimitError:
-                    st.error("Przekroczono limit zapytań API. Poczekaj chwilę i spróbuj ponownie.")
-                except Exception as e:
-                    st.error(f"Błąd podczas analizy: {e}")
+                st.markdown("---")
+
+                # --- Wyróżnienie ---
+                st.markdown("#### ⭐ Jak wyróżnić się spośród kandydatów")
+                for tip in dane["wyroznienie"]:
+                    st.markdown(
+                        f"<div style='display:flex;gap:10px;align-items:flex-start;"
+                        f"padding:8px 0;border-bottom:1px solid #1E293B;'>"
+                        f"<span style='color:#FBBF24;font-size:1rem;'>✓</span>"
+                        f"<span style='color:#CBD5E1;'>{tip}</span>"
+                        f"</div>",
+                        unsafe_allow_html=True,
+                    )
 
 with tab_info:
     st.markdown("### O aplikacji")
@@ -344,4 +397,5 @@ Bezpłatny klucz: [jooble.org/api/about](https://jooble.org/api/about)
 - **Python** + **Streamlit**
 - Równoległe pobieranie (ThreadPoolExecutor)
 - REST API
+- Statyczna baza wiedzy o stanowiskach (JSON)
 """)
