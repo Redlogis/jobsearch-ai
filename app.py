@@ -16,13 +16,20 @@ st.set_page_config(
     page_title="PracaRadar",
     page_icon="💼",
     layout="wide",
-    initial_sidebar_state="collapsed",
+    initial_sidebar_state="expanded",
 )
 
 st.markdown("""
 <style>
 [data-testid="stAppViewContainer"] { background-color: #0F172A; }
 [data-testid="stHeader"] { background-color: transparent; }
+[data-testid="stSidebar"] {
+    background-color: #0F172A;
+    border-right: 1px solid #1E293B;
+}
+[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {
+    color: #94A3B8;
+}
 
 .job-card {
     background: #1E293B;
@@ -91,19 +98,97 @@ st.markdown("""
     color: #F1F5F9 !important;
 }
 hr { border-color: #334155; }
+
+.coming-soon {
+    text-align: center;
+    padding: 80px 0;
+    color: #334155;
+}
+.coming-soon .icon { font-size: 3.5rem; margin-bottom: 16px; }
+.coming-soon h3 { color: #475569; font-size: 1.3rem; margin-bottom: 8px; }
+.coming-soon p { color: #334155; font-size: 0.95rem; }
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("## 📡 PracaRadar")
-st.markdown(
-    "<p style='color:#94A3B8;margin-top:-8px;margin-bottom:20px;'>"
-    "Twój radar na rynku pracy &nbsp;·&nbsp; 4 źródła jednocześnie</p>",
-    unsafe_allow_html=True,
-)
+# ---------------------------------------------------------------------------
+# Sidebar navigation
+# ---------------------------------------------------------------------------
 
-tab_search, tab_analysis, tab_info = st.tabs(["🔍 Wyszukiwarka ofert pracy", "🤖 Analiza stanowiska", "ℹ️ O aplikacji"])
+PAGES = [
+    ("🔍", "Wyszukiwarka"),
+    ("📊", "Analiza stanowiska"),
+    ("🎯", "Umiejętności"),
+    ("❓", "Pytania rekrutacyjne"),
+    ("📝", "Wzmacniacz CV"),
+    ("💰", "Kalkulator wynagrodzeń"),
+    ("📋", "Tracker aplikacji"),
+    ("📚", "Zasoby"),
+    ("📈", "Trendy"),
+]
 
-with tab_search:
+with st.sidebar:
+    st.markdown(
+        "<div style='padding:12px 0 20px;'>"
+        "<span style='font-size:1.4rem;font-weight:800;color:#F1F5F9;'>📡 PracaRadar</span><br>"
+        "<span style='font-size:0.75rem;color:#475569;'>Twój radar na rynku pracy</span>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+
+    page_labels = [f"{icon}  {name}" for icon, name in PAGES]
+    selected_label = st.radio(
+        "Nawigacja",
+        page_labels,
+        label_visibility="collapsed",
+    )
+    page = selected_label.split("  ", 1)[1].strip()
+
+    st.markdown(
+        "<div style='position:absolute;bottom:20px;left:0;right:0;padding:0 16px;"
+        "font-size:0.72rem;color:#1E293B;text-align:center;'>"
+        "v1.0 · PracaRadar 2025"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+
+# ---------------------------------------------------------------------------
+# Helper: placeholder for unimplemented sections
+# ---------------------------------------------------------------------------
+
+def _coming_soon(icon: str, title: str, opis: str) -> None:
+    st.markdown(
+        f"<div class='coming-soon'>"
+        f"<div class='icon'>{icon}</div>"
+        f"<h3>{title}</h3>"
+        f"<p>{opis}</p>"
+        f"</div>",
+        unsafe_allow_html=True,
+    )
+
+# ---------------------------------------------------------------------------
+# WAGA kolory (used in Analiza stanowiska)
+# ---------------------------------------------------------------------------
+
+_WAGA_COLOR = {
+    "Kluczowa": "#4ADE80",
+    "Wysoka":   "#60A5FA",
+    "Średnia":  "#FBBF24",
+    "Ważna":    "#FBBF24",
+    "Przydatna":"#94A3B8",
+}
+
+# ===========================================================================
+# PAGE: Wyszukiwarka
+# ===========================================================================
+
+if page == "Wyszukiwarka":
+    st.markdown("## 🔍 Wyszukiwarka ofert pracy")
+    st.markdown(
+        "<p style='color:#94A3B8;margin-top:-8px;margin-bottom:20px;'>"
+        "4 źródła jednocześnie — JustJoin.IT, NoFluffJobs, Adzuna, Jooble</p>",
+        unsafe_allow_html=True,
+    )
+
     col_kw, col_loc, col_btn = st.columns([3, 2, 1])
     with col_kw:
         keyword = st.text_input(
@@ -235,7 +320,6 @@ with tab_search:
   </div>
   <a class="apply-btn" href="{offer.apply_url}" target="_blank" rel="noopener noreferrer">Aplikuj →</a>
 </div>""", unsafe_allow_html=True)
-
     else:
         st.markdown(
             "<div style='text-align:center;padding:60px 0;color:#64748B;'>"
@@ -248,16 +332,12 @@ with tab_search:
             unsafe_allow_html=True,
         )
 
-_WAGA_COLOR = {
-    "Kluczowa": "#4ADE80",
-    "Wysoka":   "#60A5FA",
-    "Średnia":  "#FBBF24",
-    "Ważna":    "#FBBF24",
-    "Przydatna":"#94A3B8",
-}
+# ===========================================================================
+# PAGE: Analiza stanowiska
+# ===========================================================================
 
-with tab_analysis:
-    st.markdown("### 📊 Analiza stanowiska pracy")
+elif page == "Analiza stanowiska":
+    st.markdown("## 📊 Analiza stanowiska pracy")
     st.markdown(
         "<p style='color:#94A3B8;margin-top:-8px;margin-bottom:20px;'>"
         "Wpisz nazwę stanowiska i sprawdź zarobki, wymagane umiejętności i wskazówki rekrutacyjne</p>",
@@ -300,7 +380,6 @@ with tab_analysis:
                     unsafe_allow_html=True,
                 )
 
-                # --- Zarobki ---
                 st.markdown("#### 💰 Widełki płacowe w Polsce (brutto/miesiąc)")
                 z = dane["zarobki"]
                 col_j, col_m, col_s = st.columns(3)
@@ -333,7 +412,6 @@ with tab_analysis:
 
                 st.markdown("---")
 
-                # --- Umiejętności ---
                 st.markdown("#### 🛠️ Top 10 wymaganych umiejętności")
                 for i, u in enumerate(dane["umiejetnosci"], 1):
                     kolor = _WAGA_COLOR.get(u["waga"], "#94A3B8")
@@ -350,7 +428,6 @@ with tab_analysis:
 
                 st.markdown("---")
 
-                # --- Pytania rekrutacyjne ---
                 st.markdown("#### ❓ Pytania rekrutacyjne z odpowiedziami")
                 for i, pq in enumerate(dane["pytania"], 1):
                     with st.expander(f"Pytanie {i}: {pq['pytanie']}"):
@@ -361,7 +438,6 @@ with tab_analysis:
 
                 st.markdown("---")
 
-                # --- Wyróżnienie ---
                 st.markdown("#### ⭐ Jak wyróżnić się spośród kandydatów")
                 for tip in dane["wyroznienie"]:
                     st.markdown(
@@ -373,29 +449,79 @@ with tab_analysis:
                         unsafe_allow_html=True,
                     )
 
-with tab_info:
-    st.markdown("### O aplikacji")
-    st.markdown("""
-Aplikacja agreguje oferty pracy z 4 źródeł jednocześnie:
+# ===========================================================================
+# PAGE: Umiejętności
+# ===========================================================================
 
-| Źródło | Typ | Wymagania |
-|---|---|---|
-| **JustJoin.IT** | Publiczne API | Brak |
-| **NoFluffJobs** | REST API | Brak |
-| **Adzuna** | REST API | Wbudowany klucz |
-| **Jooble** | REST API | Opcjonalny klucz API |
+elif page == "Umiejętności":
+    _coming_soon(
+        "🎯",
+        "Wymagania i umiejętności",
+        "Hard skills, soft skills i umiejętności które dają największy skok wynagrodzenia.\nWkrótce dostępne.",
+    )
 
----
+# ===========================================================================
+# PAGE: Pytania rekrutacyjne
+# ===========================================================================
 
-#### Klucz API Jooble (opcjonalny)
-Wpisz własny klucz w sekcji **Ustawienia** pod wyszukiwarką.
-Bezpłatny klucz: [jooble.org/api/about](https://jooble.org/api/about)
+elif page == "Pytania rekrutacyjne":
+    _coming_soon(
+        "❓",
+        "Pytania rekrutacyjne",
+        "Top 20 pytań dla Twojego stanowiska z przykładowymi odpowiedziami metodą STAR.\nWkrótce dostępne.",
+    )
 
----
+# ===========================================================================
+# PAGE: Wzmacniacz CV
+# ===========================================================================
 
-#### Technologie
-- **Python** + **Streamlit**
-- Równoległe pobieranie (ThreadPoolExecutor)
-- REST API
-- Statyczna baza wiedzy o stanowiskach (JSON)
-""")
+elif page == "Wzmacniacz CV":
+    _coming_soon(
+        "📝",
+        "Wzmacniacz CV",
+        "Wklej swój opis doświadczenia — zamieniamy ogólniki w konkretne osiągnięcia z liczbami.\nWkrótce dostępne.",
+    )
+
+# ===========================================================================
+# PAGE: Kalkulator wynagrodzeń
+# ===========================================================================
+
+elif page == "Kalkulator wynagrodzeń":
+    _coming_soon(
+        "💰",
+        "Kalkulator wynagrodzeń",
+        "Na podstawie stanowiska, miasta, lat doświadczenia i umiejętności — przedział który możesz negocjować.\nWkrótce dostępne.",
+    )
+
+# ===========================================================================
+# PAGE: Tracker aplikacji
+# ===========================================================================
+
+elif page == "Tracker aplikacji":
+    _coming_soon(
+        "📋",
+        "Tracker aplikacji",
+        "Śledź swoje aplikacje: firma, stanowisko, status, data i przypomnienie o follow-up.\nWkrótce dostępne.",
+    )
+
+# ===========================================================================
+# PAGE: Zasoby
+# ===========================================================================
+
+elif page == "Zasoby":
+    _coming_soon(
+        "📚",
+        "Polecane zasoby",
+        "Dla Twojego stanowiska: kursy, narzędzia, kanały YouTube po polsku i darmowe aplikacje.\nWkrótce dostępne.",
+    )
+
+# ===========================================================================
+# PAGE: Trendy
+# ===========================================================================
+
+elif page == "Trendy":
+    _coming_soon(
+        "📈",
+        "Trendy rynkowe",
+        "Które stanowiska rosną, które maleją, gdzie są największe podwyżki w Polsce.\nWkrótce dostępne.",
+    )
