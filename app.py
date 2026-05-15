@@ -244,6 +244,7 @@ _WAGA_COLOR = {
 # ===========================================================================
 
 if page == "Wyszukiwarka":
+    st.image("assets/baner.png", use_container_width=True)
     st.markdown("## 🔍 Wyszukiwarka ofert pracy")
     st.markdown(
         "<p style='color:#94A3B8;margin-top:-8px;margin-bottom:20px;'>"
